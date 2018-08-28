@@ -1,17 +1,14 @@
 <div class="row">
+  <!-- Bin List Container -->
   <div class="col-md-4 border-debug-blue">
     <div class="card">
       <div class="card-header">
         Bin List
       </div>
       <div class="card-body">
-        <!-- TODO - make it dynamic -->
+        <!-- Bin List -->
         <ul class="list-group">
-          <li class="list-group-item">Cras justo odio</li>
-          <li class="list-group-item">Dapibus ac facilisis in</li>
-          <li class="list-group-item">Morbi leo risus</li>
-          <li class="list-group-item">Porta ac consectetur ac</li>
-          <li class="list-group-item">Vestibulum at eros</li>
+          <li *ngFor='let bin of this.bins' class="list-group-item">{{bin.binTypeDesc +" "+bin?.cityAddress+" "+bin?.streetAddress}}</li>
         </ul>
 
         <!-- <h5 class="card-title">Special title treatment</h5>
@@ -19,36 +16,40 @@
             <a href="#" class="btn btn-primary">Go somewhere</a> -->
       </div>
     </div>
-    <!-- Bin List -->
-
   </div>
+  <!-- Bin Details Container -->
   <div class="col-md-8 border-debug-red">
     <div class="card">
       <div class="card-header">
         Bin Details
+        <span class="fr" (click)='this.btnEditClicked();'>
+          <i class="fa fa-edit"></i>
+        </span>
       </div>
       <div class="card-body">
         <!-- Read Only -->
-        <!-- First row  -->
-        <div class="row">
-          <div class="col-md-8 border-debug-green">
-            <h3>Bin Type {{"X"}}</h3>
+        <div [class.dn]='this.isEditMode'>
+          <!-- First row  -->
+          <div class="row">
+            <div class="col-md-8 border-debug-green">
+              <h3>Bin Type {{"X"}}</h3>
+            </div>
+            <div class="col-md-4 border-debug-blue">
+              <h3>Capacity: {{"90%"}}</h3>
+            </div>
           </div>
-          <div class="col-md-4 border-debug-blue">
-            <h3>Capacity - {{"90%"}}</h3>
-          </div>
-        </div>
-        <!-- Second Row -->
-        <div class="row">
-          <div class="col-md-6 border-debug-green">
-            <label>Address: {{"harokmim 26"}}</label>
-          </div>
-          <div class="col-md-4 border-debug-blue">
-            <label>Area: </label>
-            <!-- Example single danger button -->
-            <div class="fr">
-              <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+          <!-- Second Row -->
+          <div class="row">
+            <div class="col-md-6 border-debug-green">
+              <label>Address: {{"harokmim 26"}}</label>
+            </div>
+            <div class="col-md-4 border-debug-blue">
+              <label>Area: </label>
+              <!-- Example single danger button -->
+              <div class="fr">
+                <div class="btn btn-secondary">test</div>
+                <!-- <div class="dropdown">
+                <button class="btn btn-secondary" [class.dropdown-toggle]="true" [class.disabled]="false" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
                   aria-expanded="false">
                   Dropdown button
                 </button>
@@ -57,25 +58,112 @@
                   <a class="dropdown-item" href="#">Another action</a>
                   <a class="dropdown-item" href="#">Something else here</a>
                 </div>
+              </div> -->
               </div>
             </div>
+            <div class="col-md-2">
+              <!-- empty div -->
+            </div>
           </div>
-          <div class="col-md-2">
-            <!-- empty div -->
-          </div>
-        </div>
-        <!-- Third Row -->
-        <div class="row">
-          <div class="col-md-6 border-debug-green">
-            <label>Current Capacity: {{150}} Litres</label>
-          </div>
-          <div class="col-md-6 border-debug-green">
-            <label>Max Capacity: {{300}} Litres</label>
+          <!-- Third Row -->
+          <div class="row">
+            <div class="col-md-6 border-debug-green">
+              <label>Current Capacity: {{150}} Litres</label>
+            </div>
+            <div class="col-md-6 border-debug-green">
+              <label>Max Capacity: {{300}} Litres</label>
+            </div>
           </div>
         </div>
 
         <!-- Edit Mode -->
-        <div>
+        <div [class.dn]='!this.isEditMode'>
+          <!-- First row  -->
+          <div class="row">
+            <div class="col-md-8 border-debug-green">
+              <h3 class="fl">Bin Type </h3>
+              <div class="fr">
+                <div class="dropdown">
+                  <button class="btn btn-secondary" [class.dropdown-toggle]="true" [class.disabled]="false" type="button" id="dropdownMenuButton"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Bin Types
+                  </button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="#">Action</a>
+                    <a class="dropdown-item" href="#">Another action</a>
+                    <a class="dropdown-item" href="#">Something else here</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 border-debug-blue">
+              <h3>Capacity: {{"90%"}}</h3>
+            </div>
+          </div>
+          <!-- Second Row -->
+          <div class="row">
+            <div class="col-md-6 border-debug-green">
+              <label>Address:</label>
+              
+              <!-- Street Number -->
+              <div class="fr">
+                <div class="dropdown">
+                  <button class="btn btn-secondary" [class.dropdown-toggle]="true" [class.disabled]="false" type="button" id="dropdownMenuButton"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Number
+                  </button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="#">Action</a>
+                    <a class="dropdown-item" href="#">Another action</a>
+                    <a class="dropdown-item" href="#">Something else here</a>
+                  </div>
+                </div>
+              </div>
+              <!-- Street Name-->
+              <div class="fr">
+                  <div class="dropdown">
+                    <button class="btn btn-secondary" [class.dropdown-toggle]="true" [class.disabled]="false" type="button" id="dropdownMenuButton"
+                      data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      Street
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                      <a class="dropdown-item" href="#">Action</a>
+                      <a class="dropdown-item" href="#">Another action</a>
+                      <a class="dropdown-item" href="#">Something else here</a>
+                    </div>
+                  </div>
+                </div>
+            </div>
+            <div class="col-md-4 border-debug-blue">
+              <label>Area: </label>
+              <!-- Example single danger button -->
+              <div class="fr">
+                <div class="dropdown">
+                  <button class="btn btn-secondary" [class.dropdown-toggle]="true" [class.disabled]="false" type="button" id="dropdownMenuButton"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Area
+                  </button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="#">Action</a>
+                    <a class="dropdown-item" href="#">Another action</a>
+                    <a class="dropdown-item" href="#">Something else here</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-2">
+              <!-- empty div -->
+            </div>
+          </div>
+          <!-- Third Row -->
+          <div class="row">
+            <div class="col-md-6 border-debug-green">
+              <label>Current Capacity: {{150}} Litres</label>
+            </div>
+            <div class="col-md-6 border-debug-green">
+              <label>Max Capacity: {{300}} Litres</label>
+            </div>
+          </div>
         </div>
       </div>
     </div>

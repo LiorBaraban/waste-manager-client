@@ -10,11 +10,15 @@ export class BinManagementService {
   controller: string;
 
   constructor(private appService: AppService) { 
-    this.controller = 'Bin';
+    this.controller = 'Bins';
   }
 
   async getAllBins(){
     return await this.appService.get(this.controller, 'GetAllBins');
+  }
+
+  async getBinManagementViewModel(){
+    return await this.appService.get(this.controller, 'GetBinManagementViewModel');
   }
   
 }

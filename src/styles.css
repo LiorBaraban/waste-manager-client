@@ -41,3 +41,7 @@
 .fr{
     float: right;
 }
+
+.dn{
+    display: none;
+}
