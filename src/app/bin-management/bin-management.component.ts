@@ -18,10 +18,18 @@ export class BinManagementComponent implements OnInit {
   areas: Array<LutItem>;
   
   //data binding members:
+  filterBins : Array<BinData>;  //copy of original bins. we'll filter on it 
 
+  binDetails : BinData;         // if an item from the list was selected, binDetails will bind to it
+                                // if it's a new item, then binDetails = new BinData();
+
+  binDetailsEdit : BinData;     // A replica of binDetails. we can edit it safely.
+                                // this is the object that we send to the server eventually...
 
   // display members:
   isEditMode: boolean;
+  isAddNewMode: boolean;      // if isEditMode && isAddNew then 'save()' will call service.addNew(), 
+                              // else (only isEditMode) then save() will call service.Update();
 
   constructor(private binManagementService : BinManagementService) { }
 
@@ -40,5 +48,11 @@ export class BinManagementComponent implements OnInit {
 
   btnEditClicked(){
     this.isEditMode = !this.isEditMode;
+  }
+
+  save(){
+    // check if add new or edit..
+    // this.binManagementService.Add(this.binDetailsEdit );
+    // this.binManagementService.updateBin(this.binDetailsEdit, date....);
   }
 }
