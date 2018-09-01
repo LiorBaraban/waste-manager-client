@@ -22,8 +22,23 @@ export class BinManagementService {
     return await this.appService.get(this.controller, 'GetBinManagementViewModel');
   }
 
-  async updateBin(binDetails: BinData, date: Date){
+  async deleteBin(id : number){
+    // await this.appService.delete(this.controller, 'DeleteBin', {binId = id};); // How to delete bin without body? 
+  }
 
+  async updateBin(binDetails: BinData){
+
+    await this.appService.post(this.controller, "UpdateBin", {
+      binId: binDetails.binId,
+      binTypeId: binDetails.binTypeId,
+      buildingId: binDetails.buildingId,
+      binTypeDesc: binDetails.binTypeDesc,
+      cityAddress: binDetails.cityAddress,
+      streetAddress: binDetails.streetAddress,
+      currentCapacity: binDetails.currentCapacity,
+      maxCapacity: binDetails.maxCapacity,
+      binTrashDisposalArea: binDetails.binTrashDisposalArea
+    });
     // mockup:
     
     // await this.appService.put(this.controller, '...', {
@@ -31,6 +46,20 @@ export class BinManagementService {
     //   date : date
     // });
 
+  }
+
+  async addBin(binDetails: BinData){
+    await this.appService.post(this.controller, "AddNewBin", {
+      // binId : binDetails.binId,
+      binTypeId : binDetails.binTypeId,
+      buildingId :binDetails.buildingId,
+      binTypeDesc :binDetails.binTypeDesc,
+      cityAddress :binDetails.cityAddress,
+      streetAddress :binDetails.streetAddress,
+      currentCapacity :binDetails.currentCapacity,
+      maxCapacity :binDetails.maxCapacity,
+      binTrashDisposalArea :binDetails.binTrashDisposalArea,
+    });
   }
   
 }
