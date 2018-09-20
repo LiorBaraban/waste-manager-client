@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { promise } from 'selenium-webdriver';
 import { resolve, reject } from 'q';
-import { AppService } from 'src/app/app.service';
+import { AppService } from '../app.service';
 
 @Injectable({
   providedIn: 'root'

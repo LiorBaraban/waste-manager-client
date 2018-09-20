@@ -1,10 +1,10 @@
-import { BinData } from 'src/app/Models/AtomicDataModels/BinData';
-import { BuildingData } from './../Models/AtomicDataModels/BuildingData';
+import { BinData } from '../Models/AtomicDataModels/BinData';
+import { BuildingData } from '../Models/AtomicDataModels/BuildingData';
 import { Component, OnInit } from '@angular/core';
-import { BinManagementService } from 'src/app/bin-management/bin-management.service';
-import { BinType } from 'src/app/Models/AtomicDataModels/BinType';
-import { LutItem } from 'src/app/Models/AtomicDataModels/LutItem';
-import { BinManagementViewModel } from 'src/app/Models/ViewModels/BinManagementViewModel';
+import { BinManagementService } from './bin-management.service';
+import { BinType } from '../Models/AtomicDataModels/BinType';
+import { LutItem } from '../Models/AtomicDataModels/LutItem';
+import { BinManagementViewModel } from '../Models/ViewModels/BinManagementViewModel';
 
 @Component({
   selector: 'app-bin-management',
@@ -23,7 +23,7 @@ export class BinManagementComponent implements OnInit {
   filterBins : Array<BinData>;  //copy of original bins. we'll filter on it 
   filteringBy : string;
   buildingsInArea : Array<BuildingData>;
-
+  updatedCapacity : number;
   binDetails : BinData;         // if an item from the list was selected, binDetails will bind to it
                                 // if it's a new item, then binDetails = new BinData();
 
@@ -73,6 +73,7 @@ export class BinManagementComponent implements OnInit {
   showBinDetails(id : number){
     this.binDetails = this.bins.find(x => x.binId == id);
     this.binDetailsEdit = this.copyBinData(this.binDetails);
+    this.updatedCapacity = this.binDetailsEdit.currentCapacity;
     this.isShowDetails = true;
     this.isAddNewMode = false;
     this.isEditMode = false;
@@ -126,6 +127,7 @@ export class BinManagementComponent implements OnInit {
   addCity(area : LutItem){
     this.isCitySelected = true;
     this.binDetailsEdit.cityAddress = area.desc;
+    this.binDetailsEdit.streetAddress = null;
     this.buildingsInArea = this.buildings.filter(x => x.areaId == area.id);
   }
 
@@ -138,12 +140,12 @@ export class BinManagementComponent implements OnInit {
       this.binDetailsEdit = null;
     }
     else if(this.isEditMode){
+      this.binDetailsEdit.currentCapacity = this.updatedCapacity;
       this.binManagementService.updateBin(this.binDetailsEdit);
       this.isEditMode = false;
       this.isCitySelected = false;
       let indx = this.bins.findIndex(x => x.binId == this.binDetailsEdit.binId);
-      this.bins.splice(indx, 1);
-      this.bins.push(this.binDetailsEdit); 
+      this.bins.splice(indx, 1, this.binDetailsEdit);
       this.binDetailsEdit = null;
     }
 
@@ -158,7 +160,7 @@ export class BinManagementComponent implements OnInit {
   }
 
   isNewBinHasAllInfo(newBin : BinData){
-    if(!newBin.binTypeId || !newBin.cityAddress || !newBin.streetAddress){
+    if(!newBin.binTypeId || !newBin.cityAddress || !newBin.streetAddress || this.updatedCapacity > newBin.maxCapacity){
       return false;
     }
     return true;
@@ -176,7 +178,13 @@ export class BinManagementComponent implements OnInit {
   }
 
   deleteBin(id : number){
-    this.binManagementService.deleteBin(id); // not working
+    this.binManagementService.deleteBin(id); // not working something with cross origin
     let indx = this.bins.findIndex(x => x.binId == id);
-    this.bins.splice(indx, 1);  }
+    this.bins.splice(indx, 1);  
+  }
+
+  updateCurrentCapacity(currCapacity : number){
+    this.updatedCapacity = currCapacity;
+  }
+
 }

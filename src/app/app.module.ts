@@ -8,6 +8,7 @@ import { Test2Component } from './test2/test2.component';
 import { HttpModule } from '@angular/http';
 import { HomepageComponent } from './homepage/homepage.component';
 import { BinManagementComponent } from './bin-management/bin-management.component';
+import { OnlyNumber } from './directives/only-number.directive';
 
 
 
@@ -28,7 +29,8 @@ let routes =
     TestComponent,
     Test2Component,
     HomepageComponent,
-    BinManagementComponent
+    BinManagementComponent,
+    OnlyNumber
   ],
   imports: [
     BrowserModule,

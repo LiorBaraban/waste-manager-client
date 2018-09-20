@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { AppService } from 'src/app/app.service';
-import { BinData } from 'src/app/Models/AtomicDataModels/BinData';
+import { AppService } from '../app.service';
+import { BinData } from '../Models/AtomicDataModels/BinData';
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +23,7 @@ export class BinManagementService {
   }
 
   async deleteBin(id : number){
-    // await this.appService.delete(this.controller, 'DeleteBin', {binId = id};); // How to delete bin without body? 
+    await this.appService.delete(this.controller, 'DeleteBin', id);
   }
 
   async updateBin(binDetails: BinData){
