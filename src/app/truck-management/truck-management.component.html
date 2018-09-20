@@ -1,0 +1,196 @@
+<div class="row">
+  <!-- Truck List Container -->
+  <div class="col-md-4 ">
+    <div class="card">
+      <div class="card-header">
+        Truck List
+        <!--Filtering DropDown List -->
+        <div class="fr">
+          <div class="dropdown">
+            <button class="btn btn-secondary" [class.dropdown-toggle]="true" [class.disabled]="false" type="button" id="dropdownMenuButton"
+              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              {{this.filteringBy}}
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <a class="dropdown-item" (click)="filteringTruck(-1);">All Trucks</a>
+              <a *ngFor="let truckType of this.truckTypes" class="dropdown-item" (click)="filteringTruck(truckType.truckTypeId);">{{truckType?.truckTypeDesc}}</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="card-body">
+        <!-- Truck List -->
+        <span class="fr" (click)="btnNewClicked();">
+          <i class="fa fa-plus-circle"></i>
+        </span>
+        <ul class="list-group">
+          <li *ngFor='let truck of this.filterTrucks' class="list-group-item" (click)="showTruckDetails(truck.truckId);" [class.active]="(this.isShowDetails || this.isEditMode) && truck.truckId == this.truckDetails.truckId">
+            {{truck.truckTypeDesc +" "}}{{ truck.areaDesc ? truck.areaDesc : " "}}
+          </li>
+        </ul>
+
+        <!-- <h5 class="card-title">Special title treatment</h5>
+            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+            <a href="#" class="btn btn-primary">Go somewhere</a> -->
+      </div>
+    </div>
+  </div>
+  <!-- Trcuk Details Container -->
+  <div class="col-md-8 ">
+    <div class="card">
+      <div class="card-header">
+        Trcuk Details
+        <span *ngIf='!this.isAddNewMode && !this.isEditMode && this.truckDetailsEdit'>
+          <span class="fr" (click)='btnEditClicked();'>
+            <i class="fa fa-edit"></i>
+          </span>
+          <span class="fr" (click)='deleteTruck(this.truckDetailsEdit.truckId);'>
+              <i class="fa fa-trash">space</i>
+            </span>
+        </span>
+        <span *ngIf='this.isAddNewMode || this.isEditMode'>
+            <span class="fr" (click)='checkAndSave();'>
+                <i class="fa fa-save"></i>
+              </span>
+            <span *ngIf="this.isEditMode" class="fr" (click)="exitEditMode();">
+                <i class="fa fa-undo"></i>
+              </span>
+              <span *ngIf="this.isAddNewMode" class="fr" (click)="exitNewMode();">
+                  <i class="fa fa-undo"></i>
+                </span>
+          </span>
+
+      </div>
+      <div class="card-body" [class.dn]='!this.isShowDetails && !this.isEditMode && !this.isAddNewMode'>
+        <!-- Read Only -->
+        <div [class.dn]='!this.isShowDetails'>
+          <!-- First row  -->
+          <div class="row">
+            <div class="col-md-7 ">
+              <h3 class="fl">Truck Type</h3>
+              <div class="fr">
+                <div class="btn btn-secondary">{{this.truckDetailsEdit?.truckTypeDesc ? this.truckDetailsEdit?.truckTypeDesc : "Truck Type"}}</div>
+              </div>
+            </div>
+            <div class="col-md-1">
+              <!-- Empty div -->
+            </div>
+            <div class="col-md-4 ">
+              <h3>Capacity: {{(this.truckDetails?.currentCapacity * 100) / this.truckDetails?.maxCapacity | number}}% </h3>
+            </div>
+          </div>
+          <!-- Second Row -->
+          <div class="row">
+            <!-- Area -->
+            <div class="col-md-7 ">
+              <label>Area: </label>
+              <!-- Example single danger button -->
+              <div class="fr">
+                <div class="btn btn-secondary">{{this.truckDetails?.areaDesc ? this.truckDetails.areaDesc : "None" }}</div>
+              </div>
+            </div>
+            <!-- Address
+            <div class="col-md-4">
+              <label>Address:</label>
+              <div class="fr">
+                <div class="btn btn-secondary">{{this.binDetails?.streetAddress ? this.binDetails?.streetAddress : "None" }}</div>
+              </div>
+            </div>-->
+            <div class="col-md-5">
+               <!-- empty div  -->
+            </div>
+          </div>
+          <!-- Third Row -->
+          <div class="row">
+            <div class="col-md-6 ">
+              <label>Current Capacity: {{this.truckDetails?.currentCapacity}} Litres</label>
+            </div>
+            <div class="col-md-6 ">
+              <label>Max Capacity: {{this.truckDetails?.maxCapacity}} Litres</label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Edit Mode -->
+        <div [class.dn]='!this.isEditMode && !this.isAddNewMode'>
+          <!-- First row  -->
+          <div class="row">
+            <div class="col-md-7 ">
+              <h3 class="fl">Truck Type </h3>
+              <div class="fr">
+                <div class="dropdown">
+                  <button class="btn btn-secondary" [class.dropdown-toggle]="true" [class.disabled]="false" type="button" id="dropdownMenuButton"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    {{this.truckDetailsEdit?.truckTypeDesc ? this.truckDetailsEdit?.truckTypeDesc : "Truck Type"}}
+                  </button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a *ngFor="let truckType of truckTypes" class="dropdown-item" (click)="addTruckType(truckType);">{{truckType.truckTypeDesc}}</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-1">
+              <!-- Empty Div -->
+            </div>
+            <div class="col-md-4 ">
+              <h3 *ngIf="this.isEditMode">Capacity: {{(this.truckDetails?.currentCapacity * 100) / this.truckDetails?.maxCapacity | number}}%</h3>
+              <h3 *ngIf="this.isAddNewMode">Capacity: 0%</h3>
+            </div>
+          </div>
+          <!-- Second Row -->
+          <div class="row">
+            <!-- Area -->
+            <div class="col-md-7 ">
+                <label>Area: </label>
+                <!-- Example single danger button -->
+                <div class="fr">
+                  <div class="dropdown">
+                    <button class="btn btn-secondary" [class.dropdown-toggle]="true" [class.disabled]="false" type="button" id="dropdownMenuButton"
+                      data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      {{this.truckDetailsEdit?.areaDesc ? this.truckDetailsEdit.areaDesc : "Area"}}
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                      <a *ngFor="let area of areas" class="dropdown-item" (click)="addCity(area)">{{area.desc}}</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <!-- Address
+            <div class="col-md-4 ">
+                <label>Address:</label>
+                <!-- Street Number 
+                <div class="fr">
+                  <div class="dropdown">
+                    <button class="btn btn-secondary" [class.dropdown-toggle]="true" [class.disabled]="false" type="button" id="dropdownMenuButton"
+                      data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" [disabled]="!this.isCitySelected">
+                      {{this.binDetailsEdit?.streetAddress ? this.binDetailsEdit.streetAddress : "Address"}}
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                      <a *ngFor="let building of buildingsInArea" class="dropdown-item" (click)="addStreetAddress(building)">{{building.streetName + " " + building.streetNumber}}</a>
+                    </div>
+                  </div>
+                </div>
+              </div>-->
+            <div class="col-md-5">
+              <!-- empty div -->
+            </div> 
+          </div>
+          <!-- Third Row -->
+          <div class="row">
+            <div class="col-md-6 ">
+              <label>Current Capacity: </label>
+              <label *ngIf="this.isAddNewMode"> 0</label>
+                <input *ngIf="this.isEditMode" type="text" placeholder="{{this.truckDetailsEdit.currentCapacity}}" 
+                        OnlyNumber="true" name="inputCapacity" (focusout)="updateCurrentCapacity($event.target.value)">
+              <!-- change current capacity - asign it to var ?? -->
+            </div>
+            <div class="col-md-6 ">
+              <label>Max Capacity: {{this.truckDetailsEdit?.maxCapacity}} Litres</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

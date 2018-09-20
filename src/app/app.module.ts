@@ -9,6 +9,7 @@ import { HttpModule } from '@angular/http';
 import { HomepageComponent } from './homepage/homepage.component';
 import { BinManagementComponent } from './bin-management/bin-management.component';
 import { OnlyNumber } from './directives/only-number.directive';
+import { TruckManagementComponent } from './truck-management/truck-management.component';
 
 
 
@@ -18,7 +19,8 @@ let routes =
   { path: '', redirectTo: '/homepage', pathMatch: 'full' },
   { path: 'test2', component: Test2Component },
   { path: 'homepage', component: HomepageComponent },
-  { path: 'bin', component: BinManagementComponent}
+  { path: 'bin', component: BinManagementComponent}, 
+  { path: 'truck', component: TruckManagementComponent}
 ]
 
 
@@ -30,7 +32,8 @@ let routes =
     Test2Component,
     HomepageComponent,
     BinManagementComponent,
-    OnlyNumber
+    OnlyNumber,
+    TruckManagementComponent
   ],
   imports: [
     BrowserModule,

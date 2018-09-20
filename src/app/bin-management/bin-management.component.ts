@@ -118,17 +118,16 @@ export class BinManagementComponent implements OnInit {
     this.binDetailsEdit.binTrashDisposalArea = binType.binTrashDisposalArea;
   }
 
-   
-  addStreetAddress(buildingData : BuildingData){
-    this.binDetailsEdit.streetAddress = buildingData.streetName + " " + buildingData.streetNumber;
-    this.binDetailsEdit.buildingId = buildingData.buildingId;
-  }
-
   addCity(area : LutItem){
     this.isCitySelected = true;
     this.binDetailsEdit.cityAddress = area.desc;
     this.binDetailsEdit.streetAddress = null;
     this.buildingsInArea = this.buildings.filter(x => x.areaId == area.id);
+  }
+
+  addStreetAddress(buildingData : BuildingData){
+    this.binDetailsEdit.streetAddress = buildingData.streetName + " " + buildingData.streetNumber;
+    this.binDetailsEdit.buildingId = buildingData.buildingId;
   }
 
   save(){
