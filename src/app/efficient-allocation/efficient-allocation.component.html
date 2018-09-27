@@ -1,0 +1,145 @@
+<!-- Progress bar -->
+<div class="row">
+  <div class="container">
+    <div class="row bs-wizard" style="border-bottom:0;">
+        
+        <div [class]="this.step === 1 ? 'col-xs-4 bs-wizard-step active' : 'col-xs-4 bs-wizard-step complete'">
+          <div class="text-center bs-wizard-stepnum">Choose building</div>
+          <div class="progress"><div class="progress-bar"></div></div>
+          <a href="#" class="bs-wizard-dot"></a>
+        </div>
+        
+        <div [class]="this.step === 2 ? 'col-xs-4 bs-wizard-step active' : this.step < 2 ? 'col-xs-4 bs-wizard-step disabled' : 'col-xs-4 bs-wizard-step complete'">
+          <div class="text-center bs-wizard-stepnum">Algorithm suggestion</div>
+          <div class="progress"><div class="progress-bar"></div></div>
+          <a href="#" class="bs-wizard-dot"></a>
+        </div>
+
+        <div [class]="this.step === 3 ? 'col-xs-4 bs-wizard-step active' : this.step < 3 ? 'col-xs-4 bs-wizard-step disabled' : 'col-xs-4 bs-wizard-step complete'">
+          <div class="text-center bs-wizard-stepnum">Implement suggestion</div>
+          <div class="progress"><div class="progress-bar"></div></div>
+          <a href="#" class="bs-wizard-dot"></a>
+        </div>
+    </div>
+  </div>
+</div>
+
+<!-- First step -->
+<div [class.dn]="this.step != 1">
+  <!-- Building -->
+  <div class="row">
+    <div class="col-md-3">
+      <h3 class="fl">Building: </h3>
+    </div>
+    <div class="col-md-6">
+      <div class="dropdown">
+        <button class="btn btn-secondary" [class.dropdown-toggle]="true" [class.disabled]="false" type="button" id="dropdownMenuButton"
+          data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          {{this.currentBuilding?.buildingId ? this.currentBuilding.streetName +" "+  this.currentBuilding.streetNumber : "Choose building"}}
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <a *ngFor="let building of buildings" class="dropdown-item" (click)="SelectBuilding(building);">{{building.streetName +" "+ building.streetNumber}}</a>
+        </div>
+        <-- change this sucker, suppuse to be align with the h3
+      </div>
+    </div>
+    <div class="col-md-3"><!-- empty div --></div>
+  </div>
+
+  <!-- Area -->
+  <div class="row">
+    <div class="col-md-3">
+      <h3 class="fl">Area: </h3>
+    </div>
+    <div class="col-md-6">
+      <div class="btn btn-secondary">{{this.currentBuilding?.buildingId? this.currentBuilding.areaDesc : "None"}}</div>
+    </div>
+    <div class="col-md-3"></div>
+  </div>
+
+  <!-- BinDisposalArea -->
+  <div class="row">
+    <div class="col-md-3">
+      <h3 class="fl">Bins disposal area: </h3>  
+    </div>
+    <div class="col-md-6">
+      <div class="btn btn-secondary">{{this.currentBuilding?.buildingId? this.currentBuilding.binsArea +" Square meters": "None"}}</div>
+    </div>
+    <div class="col-md-3"></div>
+  </div>
+
+  <!-- NumOfcleanUp -->
+  <div class="row">
+    <div class="col-md-3">
+      <h3 class="fl">Number of cleanups: </h3>  
+    </div>
+    <div class="col-md-6">
+      <div class="btn btn-secondary">{{this.currentBuilding?.buildingId? this.currentBuilding.numOfDays + " Days" : "None"}}</div>
+    </div>
+    <div class="col-md-3"></div>
+  </div>
+
+  <!-- avgCapacity -->
+  <div class="row">
+    <div class="col-md-3">
+      <h3 class="fl">Average capacity: </h3>  
+    </div>
+    <div class="col-md-6">
+      <div class="btn btn-secondary">{{this.currentBuilding?.buildingId? this.currentBuilding.avgCapacity +"%" : "None"}}</div>
+    </div>
+    <div class="col-md-3"><button type="button" class="btn btn-danger btn-circle btn-xl" [disabled]="!this.buildingSelected" (click)="algoBtnClick();">Optimize</button></div>
+  </div>
+</div>
+
+<!-- Second step -->
+<div [class.dn]="this.step != 2">
+  <!-- Suggestion -->
+  <div class="row">
+    <div class="col-md-2">
+      <h3 class="fl">We suggest to: </h3>  
+    </div>  
+    <div class="col-md-10">
+      <div class="btn btn-secondary">{{this.algoSuggestion}}</div>
+    </div>
+  </div>
+
+  <!-- Deny/Accept buttons -->
+  <div class="container row">
+    <div class="col-md-4"><!-- empty div --></div>
+    <div class="btn-group btn-group-justified col-md-6" [style.paddingLeft]="'6%'"><!-- ask lior about the padding, do it nicer -->
+      <div class="btn-group">
+        <button type="button" class="btn btn-danger" (click)="this.denyBtnClick();">Deny</button>
+      </div>
+      <div class="btn-group">
+        <button type="button" class="btn btn-success" [disabled]="(this.suggestion?.suggestionAction==3)" (click)="this.accepctBtnClick();">Accept</button>
+      </div>
+    </div>
+    <div class="col-md-2"><!-- empty div --></div>
+  </div>
+
+</div>
+
+  <!-- third step -->
+  <div [class.dn]="this.step != 3">
+    <!-- Result -->
+    <div class="row">
+        <div class="col-md-4"><!-- empty div --></div>
+        <div class="card text-center col-md-4">
+            <div class="card-header"></div>
+            <div class="card-body">
+              <h3 class="card-title">implementation succeeded</h3>
+              <p class="card-text"></p>
+              <button type="button" class="btn btn-primary" (click)="this.denyBtnClick();">OK</button>
+            </div>
+            <div class="card-footer text-muted"></div>
+        </div>
+        <div class="col-md-4"><!-- empty div --></div>
+    </div>
+</div>
+
+
+
+<!-- Wizard progress bar -->
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>

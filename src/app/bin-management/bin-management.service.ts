@@ -23,7 +23,7 @@ export class BinManagementService {
   }
 
   async deleteBin(id : number){
-    await this.appService.delete(this.controller, 'DeleteBin', id);
+    await this.appService.delete(this.controller, 'DeleteBin', '?binId='+id);
   }
 
   async updateBin(binDetails: BinData){

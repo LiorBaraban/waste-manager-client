@@ -47,10 +47,10 @@ export class AppService {
     }
   }
 
-  async delete(controller, action, id) {
+  async delete(controller, action, id?) {
 
     try {
-      let response = await this.http.get(`${this.url}/${controller}/${action}/?binId=${id}`).toPromise();
+      let response = await this.http.get(`${this.url}/${controller}/${action}/${id}`).toPromise();
       return response.json();
     } catch (error) {
       console.log("GET failed!")
