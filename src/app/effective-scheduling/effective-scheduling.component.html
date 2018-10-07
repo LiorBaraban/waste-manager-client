@@ -1,0 +1,83 @@
+<div [class.dn]="this.error == 0">
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th scope="col">Area</th>
+        <th scope="col">Numbers of buildings</th>
+        <th scope="col">Current Capacity/Max Capacity</th>
+        <th scope="col">Truck</th>
+        <th scope="col">Number of cleanups</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let area of areas">
+        <th scope="row">{{area.area.desc}}</th>
+        <td>{{area.numOfBuildings}}</td>
+        <td>{{area.capacity}}/{{area.maxCapacity}} </td>
+        <td>
+          <div class="btn btn-secondary" [class.dn]="this.editManually">{{this.GetTruckDesc(area.truckId)}}</div>
+          <div class="dropdown" [class.dn]="!this.editManually">
+            <button class="btn btn-secondary" [class.dropdown-toggle]="true" type="button" id="dropdownMenuButton"
+              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              {{this.InUpdatedArea(area.area.id) ? this.GetTruckDesc(this.GetTruckIdUpdatedAreas(area.area.id)) : this.GetTruckDesc(area.truckId)}}
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a *ngFor="let truck of availableTrucks" class="dropdown-item" (click)="this.updateArea(area.area.id, truck.truckId);">{{truck.truckTypeDesc}}</a>
+            <a class="dropdown-item" (click)="this.updateArea(area.area.id, -1);">None</a>
+            </div>
+          </div>
+        </td>
+        <td>{{this.InUpdatedArea(area.area.id) ? this.GetTruckIdUpdatedCleanups(area.area.id) : area.numOfCleanups}}</td>
+      </tr>
+      <tr>
+        <th scope="row">Total</th>
+        <td>{{totalStats?.numOfBuildings}}</td>
+        <td>{{totalStats?.capacity}}/{{totalStats?.maxCapacity}} </td>
+        <td><!--Empty td--></td>
+        <td>{{totalStats?.numOfCleanups}}</td>
+      </tr>
+    </tbody>
+    <div class="alert alert-danger" role="alert" [class.dn]="!this.areaError">
+      There is an area without a truck.
+    </div>
+  </table>
+
+  <!-- EditManually/Algo buttons -->
+  <div class="container row" [class.dn]="this.editManually">
+    <div class="col-md-5"><!-- empty div --></div>
+    <div class="btn-group btn-group-justified col-md-6" [style.paddingLeft]="'6%'"><!-- ask lior about the padding, do it nicer -->
+      <div class="btn-group">
+        <button type="button" class="btn btn-default" (click)="this.EditManuallyBtnClick();">Edit manually</button>
+      </div>
+      <div class="btn-group">
+        <button type="button" class="btn btn-primary" (click)="this.Optimize();">Optimize</button>
+      </div>
+    </div>
+    <div class="col-md-1"><!-- empty div --></div>
+  </div>
+
+  <!-- Exit/Save buttons -->
+  <div class="container row" [class.dn]="!this.editManually">
+      <div class="col-md-5"><!-- empty div --></div>
+      <div class="btn-group btn-group-justified col-md-6" [style.paddingLeft]="'6%'"><!-- ask lior about the padding, do it nicer -->
+        <div class="btn-group">
+          <button type="button" class="btn btn-default" (click)="this.ExitBtnClick();">Exit</button>
+        </div>
+        <div class="btn-group">
+          <button type="button" class="btn btn-primary" (click)="this.SaveBtnClick();">Save</button>
+        </div>
+      </div>
+      <div class="col-md-1"><!-- empty div --></div>
+    </div>
+</div>
+
+<!-- Failed -->
+<div class="card text-center col-md-4" [class.dn]="this.error == 1">
+    <div class="card-header"></div>
+    <div class="card-body">
+      <h3 class="card-title">Optimization failed</h3>
+      <p class="card-text"></p>
+      <button type="button" class="btn btn-primary" (click)="this.ErrorBtnClick();">OK</button>
+    </div>
+    <div class="card-footer text-muted"></div>
+</div>

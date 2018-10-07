@@ -11,6 +11,7 @@ import { BinManagementComponent } from './bin-management/bin-management.componen
 import { OnlyNumber } from './directives/only-number.directive';
 import { TruckManagementComponent } from './truck-management/truck-management.component';
 import { EfficientAllocationComponent } from './efficient-allocation/efficient-allocation.component';
+import { EffectiveSchedulingComponent } from './effective-scheduling/effective-scheduling.component';
 
 
 
@@ -22,7 +23,9 @@ let routes =
   { path: 'homepage', component: HomepageComponent },
   { path: 'bin', component: BinManagementComponent}, 
   { path: 'truck', component: TruckManagementComponent},
-  { path: 'efficientAllocation', component: EfficientAllocationComponent}
+  { path: 'efficientAllocation', component: EfficientAllocationComponent},
+  { path: 'effectiveScheduling', component: EffectiveSchedulingComponent}
+  
 
 ]
 
@@ -37,7 +40,8 @@ let routes =
     BinManagementComponent,
     OnlyNumber,
     TruckManagementComponent,
-    EfficientAllocationComponent
+    EfficientAllocationComponent,
+    EffectiveSchedulingComponent
   ],
   imports: [
     BrowserModule,

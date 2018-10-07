@@ -124,7 +124,8 @@
     <!-- Result -->
     <div class="row">
         <div class="col-md-4"><!-- empty div --></div>
-        <div class="card text-center col-md-4">
+        <!-- Succeeded -->
+        <div class="card text-center col-md-4" [class.dn]="!this.showSuccess">
             <div class="card-header"></div>
             <div class="card-body">
               <h3 class="card-title">implementation succeeded</h3>
@@ -133,8 +134,21 @@
             </div>
             <div class="card-footer text-muted"></div>
         </div>
+
+        <!-- Failed -->
+        <div class="card text-center col-md-4" [class.dn]="!this.showError">
+          <div class="card-header"></div>
+          <div class="card-body">
+            <h3 class="card-title">implementation failed</h3>
+            <p class="card-text"></p>
+            <button type="button" class="btn btn-primary" (click)="this.denyBtnClick();">OK</button>
+          </div>
+          <div class="card-footer text-muted"></div>
+      </div>
         <div class="col-md-4"><!-- empty div --></div>
     </div>
+
+    
 </div>
 
 

@@ -24,6 +24,8 @@ export class EfficientAllocationComponent implements OnInit {
   // display members:
   step : number;
   buildingSelected : boolean;
+  showSuccess : boolean;
+  showError : boolean;
 
   constructor(private efficientAllocationService : EfficientAllocationService) { }
 
@@ -36,6 +38,8 @@ export class EfficientAllocationComponent implements OnInit {
     this.step = 1;
     this.buildingSelected = false;
     this.algoSuggestion = "";
+    this.showSuccess = false;
+    this.showError = false;
   }
 
   async algoBtnClick(){
@@ -91,11 +95,23 @@ export class EfficientAllocationComponent implements OnInit {
     this.step = 1;
     this.algoSuggestion = "";
     this.suggestion = null;
+    this.showSuccess = false;
+    this.showError = false;
   }
 
   accepctBtnClick(){
     this.step = 3;
-    this.efficientAllocationService.ImplementSuggestion(this.suggestion, this.currentBuilding.buildingId);
+    this.efficientAllocationService.ImplementSuggestion(this.suggestion, this.currentBuilding.buildingId)
+    .then(answer => {
+
+      if(answer == true){
+        this.showSuccess = true;
+      }
+      else {
+        this.showError = true;
+      }
+
+    });
   }
 
   SelectBuilding(building : BuildingData){

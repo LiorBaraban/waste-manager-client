@@ -140,7 +140,7 @@ export class TruckManagementComponent implements OnInit {
   }
 
   isNewTruckHasAllInfo(newTruck : TruckData){
-    if(!newTruck.truckTypeId || !newTruck.areaId || this.updatedCapacity > newTruck.maxCapacity){
+    if(!newTruck.truckTypeId || this.updatedCapacity > newTruck.maxCapacity){
       return false;
     }
     return true;
