@@ -6,6 +6,6 @@ export class AreaData{
     numOfBuildings : number;
     capacity : number;
     maxCapacity : number;
-    truckId : number;
+    truckId? : number;
     numOfCleanups : number;
 }

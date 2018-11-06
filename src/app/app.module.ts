@@ -12,6 +12,7 @@ import { OnlyNumber } from './directives/only-number.directive';
 import { TruckManagementComponent } from './truck-management/truck-management.component';
 import { EfficientAllocationComponent } from './efficient-allocation/efficient-allocation.component';
 import { EffectiveSchedulingComponent } from './effective-scheduling/effective-scheduling.component';
+import { SubmittersComponent } from './submitters/submitters.component';
 
 
 
@@ -20,6 +21,7 @@ let routes =
   { path: 'test', component: TestComponent },
   { path: '', redirectTo: '/homepage', pathMatch: 'full' },
   { path: 'test2', component: Test2Component },
+  { path: 'submitters', component: SubmittersComponent },
   { path: 'homepage', component: HomepageComponent },
   { path: 'bin', component: BinManagementComponent}, 
   { path: 'truck', component: TruckManagementComponent},
@@ -41,7 +43,8 @@ let routes =
     OnlyNumber,
     TruckManagementComponent,
     EfficientAllocationComponent,
-    EffectiveSchedulingComponent
+    EffectiveSchedulingComponent,
+    SubmittersComponent
   ],
   imports: [
     BrowserModule,

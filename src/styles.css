@@ -2,6 +2,109 @@
 @import "~bootstrap/dist/css/bootstrap.css";
 @import "~font-awesome/css/font-awesome.css";
 
+
+.navbar-light .navbar-toggler-icon {
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(255,255,255, 0.5)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E");
+  }
+  
+  .navbar-light .navbar-toggler {
+    border-color: rgb(255,255,255);
+  } 
+
+.list-group-item, .card-body{
+    background-color: #fffaf9;
+}
+
+.text-center{
+    text-align: center;
+}
+
+.profile-pic{
+    width: 300px;
+    height: 300px;
+    border-radius: 1000px;
+    margin: 20px;
+    position: relative;
+    left: 7%;
+}
+
+.navbar a{
+    color: white !important;
+}
+.navbar .fa{
+    position: relative;
+    bottom: 3px;
+    padding-right: 5px;
+}
+
+.btn-primary{
+    background-color: #196ca0 ;
+    border: 4px solid #37568c;
+    border-radius: 5px;
+}
+
+.navbar-light .navbar-brand, .navba-toggler {
+    color: white !important;
+}
+
+.bg-light{
+    /* background-color: #bafbdc !important; */
+    background-color: #2f4050 !important;
+    
+}
+
+.card{
+    margin-top: 20px;
+}
+
+.card-header{
+    /* background-color: #9ce5cd; */
+    background-color: #5ee1c6;
+    min-height: 70px;
+}
+
+.list-group-item.active{
+    background-color: #0462af;
+}
+
+.main-background{
+    /* background-image: linear-gradient(to left, #F0EDFF ,#AAA7DE);  */
+    background-color: #f6f7f9;
+}
+
+.btn-secondary {
+    background-color: rgba(0,0,0,0);
+    color: #6c757d;
+    border-color: #6c757d;
+    margin-right: 10px;
+    margin-left: 10px;
+    padding-right: 5px;
+    padding-left: 5px;
+}
+
+.dropdown .btn-secondary{
+    background-color: rgba(0,0,0,0);
+    color: #6c757d;
+    border-color: #6c757d;
+}
+
+.fa-lg {
+    font-size: 1.5em;
+}
+
+.no-pad{
+    padding: 0px !important;
+}
+
+.card-body .list-group-item:first-child {
+    border-top-left-radius: 0.0rem;
+    border-top-right-radius: 0.0rem;
+}
+
+.card-body .row{
+    padding-bottom: 30px;
+}
+
 .border-debug-black{
     border: 1px solid black;
 }
@@ -32,6 +135,38 @@
 
 .pad-b-10{
     padding-bottom: 10px;
+}
+
+
+.pad-l-20{
+    padding-left: 20px;
+}
+
+.pad-r-20{
+    padding-right: 20px;
+}
+
+.pad-t-20{
+    padding-top: 20px;
+}
+
+.pad-b-20{
+    padding-bottom: 20px;
+}
+
+.mar-t-10{
+    margin-top: 10px;
+}
+
+.mar-b-10{
+    margin-bottom: 10px;
+}
+
+.mar-l-10{
+    margin-left: 10px;
+}
+.mar-r-10{
+    margin-right: 10px;
 }
 
 .fl{

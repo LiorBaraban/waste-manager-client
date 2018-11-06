@@ -3,10 +3,19 @@
   <div class="col-md-4 ">
     <div class="card">
       <div class="card-header">
-        Bin List
+
+        <h3 class="fl">
+          Bin List
+        </h3>
         <!--Filtering DropDown List -->
         <div class="fr">
-          <div class="dropdown">
+            <button class="btn btn-secondary fr" (click)="btnNewClicked();">
+                <span >
+                  AddNew
+                  <i class="fa fa-plus-circle"></i>
+                </span>
+              </button>
+          <div class="dropdown fr">
             <button class="btn btn-secondary" [class.dropdown-toggle]="true" [class.disabled]="false" type="button" id="dropdownMenuButton"
               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               {{this.filteringBy}}
@@ -16,14 +25,14 @@
               <a *ngFor="let binType of this.binTypes" class="dropdown-item" (click)="filteringBin(binType.binTypeId);">{{binType?.binTypeDesc}}</a>
             </div>
           </div>
+
+          
         </div>
 
       </div>
-      <div class="card-body">
+      <div class="card-body no-pad">
         <!-- Bin List -->
-        <span class="fr" (click)="btnNewClicked();">
-          <i class="fa fa-plus-circle"></i>
-        </span>
+        
         <ul class="list-group">
           <li *ngFor='let bin of this.filterBins' class="list-group-item" (click)="showBinDetails(bin.binId);" [class.active]="(this.isShowDetails || this.isEditMode) && bin.binId == this.binDetails.binId">
             {{bin.binTypeDesc +" "}}{{ bin.cityAddress ? bin.cityAddress : " " + " "}}{{bin?.streetAddress}}
@@ -40,24 +49,26 @@
   <div class="col-md-8 ">
     <div class="card">
       <div class="card-header">
-        Bin Details
+        <h3 class="fl">
+          Bin Details
+        </h3>
         <span *ngIf='!this.isAddNewMode && !this.isEditMode && this.binDetailsEdit'>
           <span class="fr" (click)='btnEditClicked();'>
-            <i class="fa fa-edit"></i>
+            <i class="fa fa-lg fa-edit pad-l-10 mar-t-10"></i>
           </span>
           <span class="fr" (click)='deleteBin(this.binDetailsEdit.binId);'>
-              <i class="fa fa-trash">space</i>
+              <i class="fa  fa-lg fa-trash mar-t-10"></i>
             </span>
         </span>
         <span *ngIf='this.isAddNewMode || this.isEditMode'>
             <span class="fr" (click)='checkAndSave();'>
-                <i class="fa fa-save"></i>
+                <i class="fa  fa-lg fa-save pad-l-10 mar-t-10"></i>
               </span>
             <span *ngIf="this.isEditMode" class="fr" (click)="exitEditMode();">
-                <i class="fa fa-undo"></i>
+                <i class="fa  fa-lg fa-undo mar-t-10"></i>
               </span>
               <span *ngIf="this.isAddNewMode" class="fr" (click)="exitNewMode();">
-                  <i class="fa fa-undo"></i>
+                  <i class="fa  fa-lg fa-undo mar-t-10"></i>
                 </span>
           </span>
 
