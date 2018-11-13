@@ -169,6 +169,21 @@
     margin-right: 10px;
 }
 
+.mar-t-20{
+    margin-top: 20px;
+}
+
+.mar-b-20{
+    margin-bottom: 20px;
+}
+
+.mar-l-20{
+    margin-left: 20px;
+}
+.mar-r-20{
+    margin-right: 20px;
+}
+
 .fl{
     float: left;
 }

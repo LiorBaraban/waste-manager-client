@@ -37,6 +37,8 @@ export class BinManagementComponent implements OnInit {
   isAddNewMode: boolean;      // if isEditMode && isAddNew then 'save()' will call service.addNew(), 
                               // else (only isEditMode) then save() will call service.Update();
 
+  isShowBinsWithoutBuildings: boolean;
+
   constructor(private binManagementService : BinManagementService) { }
 
   async ngOnInit() {
@@ -57,6 +59,7 @@ export class BinManagementComponent implements OnInit {
     this.isEditMode = false;
     this.isAddNewMode = false;
     this.isCitySelected = false;
+    this.isShowBinsWithoutBuildings = false;
   }
 
   filteringBin(id : number){
