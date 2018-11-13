@@ -18,7 +18,7 @@
           <div class="dropdown fr">
             <button class="btn btn-secondary" [class.dropdown-toggle]="true" [class.disabled]="false" type="button" id="dropdownMenuButton"
               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              {{this.filteringBy}}<!--!!!!!-->
+              {{this.filteringBy}}
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
               <a class="dropdown-item" (click)="filteringBuildings(-1);">All Buildings</a>
@@ -31,7 +31,7 @@
         <!-- Building List -->
         
         <ul class="list-group">
-          <li *ngFor='let building of this.filterBuildings' class="list-group-item" (click)="showBuildingDetails(building.buildingId);" [class.active]="(this.isShowDetails || this.isEditMode) && building.buildingId == this.buildingDetails.buildingId">
+          <li *ngFor='let building of this.filterBuildings' class="list-group-item" (click)="showBuildingDetails(building.buildingId);" [class.active]="(this.isShowDetails) && building.buildingId == this.buildingDetails.buildingId">
             {{ building?.streetName + " " + building?.streetNumber + " " + this.GetAreaDesc(building.areaId)}}
           </li>
         </ul>
@@ -49,20 +49,14 @@
         <h3 class="fl">
           Building Details
         </h3>
-        <span *ngIf='!this.isAddNewMode && !this.isEditMode && this.buildingDetailsEdit'>
-          <span class="fr" (click)='btnEditClicked();'>
-            <i class="fa fa-lg fa-edit pad-l-10 mar-t-10"></i>
-          </span>
+        <span *ngIf='!this.isAddNewMode && this.buildingDetailsEdit'>
           <span class="fr" (click)='deleteBuilding(this.buildingDetailsEdit.buildingId);'>
               <i class="fa  fa-lg fa-trash mar-t-10"></i>
             </span>
         </span>
-        <span *ngIf='this.isAddNewMode || this.isEditMode'>
+        <span *ngIf='this.isAddNewMode'>
             <span class="fr" (click)='checkAndSave();'>
                 <i class="fa  fa-lg fa-save pad-l-10 mar-t-10"></i>
-              </span>
-            <span *ngIf="this.isEditMode" class="fr" (click)="exitEditMode();">
-                <i class="fa  fa-lg fa-undo mar-t-10"></i>
               </span>
               <span *ngIf="this.isAddNewMode" class="fr" (click)="exitNewMode();">
                   <i class="fa  fa-lg fa-undo mar-t-10"></i>
@@ -70,7 +64,7 @@
           </span>
 
       </div>
-      <div class="card-body" [class.dn]='!this.isShowDetails && !this.isEditMode && !this.isAddNewMode'>
+      <div class="card-body" [class.dn]='!this.isShowDetails && !this.isAddNewMode'>
         <!-- Read Only -->
         <div [class.dn]='!this.isShowDetails'>
           <!-- First row  -->
@@ -121,7 +115,7 @@
         </div>
 
         <!-- Edit Mode -->
-        <div [class.dn]='!this.isEditMode && !this.isAddNewMode'>
+        <div [class.dn]='!this.isAddNewMode'>
           <!-- First row  -->
           <div class="row">
             <div class="col-md-4 ">

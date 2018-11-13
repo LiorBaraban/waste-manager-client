@@ -32,7 +32,6 @@ export class BuildingAreaManagementComponent implements OnInit {
   // display members:
   isShowDetails: boolean;
   isCitySelected: boolean;
-  isEditMode: boolean;
   isAddNewMode: boolean; 
   errorDupl: boolean;
 
@@ -51,7 +50,6 @@ export class BuildingAreaManagementComponent implements OnInit {
     this.filteringBy = "Areas";
 
     this.isShowDetails = false;
-    this.isEditMode = false;
     this.isAddNewMode = false;
     this.isCitySelected = false;
     
@@ -73,7 +71,6 @@ export class BuildingAreaManagementComponent implements OnInit {
     this.buildingDetailsEdit = this.copyBuildingData(this.buildingDetails);
     this.isShowDetails = true;
     this.isAddNewMode = false;
-    this.isEditMode = false;
   }
 
   copyBuildingData(buildingData : DbBuilding){
@@ -90,19 +87,9 @@ export class BuildingAreaManagementComponent implements OnInit {
     return this.areas.find(x => x.id == areaId).desc;
   }
 
-  btnEditClicked(){
-    if(this.buildingDetails){
-      this.isEditMode = true;
-      this.isShowDetails = false;
-      this.isAddNewMode = false;
-    }
-  }
-
   btnNewClicked(){
     this.isAddNewMode = true;
-    this.isEditMode = false;
     this.isShowDetails = false;
-    
     this.buildingDetailsEdit = new DbBuilding();
   }
 
@@ -126,7 +113,6 @@ export class BuildingAreaManagementComponent implements OnInit {
     if(!newBuilding.streetName || !newBuilding.streetNumber || newBuilding.trashDisposalArea < 0 || !newBuilding.areaId){
       return false;
     }       
-    //check for duplicates!!
     let index = this.buildings.filter(x => x.streetName == newBuilding.streetName).findIndex(x => x.streetNumber == newBuilding.streetNumber);
     if( index != -1 && this.buildings[index].areaId == newBuilding.areaId){
       this.errorDupl = true;
@@ -143,25 +129,10 @@ export class BuildingAreaManagementComponent implements OnInit {
       this.isCitySelected = false;
       this.buildingDetailsEdit = null;
     }
-    else if(this.isEditMode){
-      //this.buildingDetailsEdit.trashDisposalArea = this.updatedtrashDisposalArea;
-     // this.binManagementService.updateBin(this.binDetailsEdit);
-      this.isEditMode = false;
-      this.isCitySelected = false;
-      //let indx = this.bins.findIndex(x => x.binId == this.binDetailsEdit.binId);
-      //this.bins.splice(indx, 1, this.binDetailsEdit);
-      this.buildingDetailsEdit = null;
-    }
   }
 
   exitNewMode(){
     this.isAddNewMode = false;
-    this.isCitySelected = false;
-    this.buildingDetailsEdit = null;
-  }
-
-  exitEditMode(){
-    this.isEditMode = false;
     this.isCitySelected = false;
     this.buildingDetailsEdit = null;
   }

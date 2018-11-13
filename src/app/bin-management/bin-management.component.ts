@@ -51,7 +51,7 @@ export class BinManagementComponent implements OnInit {
     this.binTypes = viewModel.binTypes;
     this.buildings = viewModel.buildings;
 
-    this.filterBins = this.bins;
+    this.filterBins = this.bins.filter(x => x.buildingId != null);;
     this.filteringBy = "Bin Types";
     this.buildingsInArea = this.buildings;
 
@@ -64,12 +64,21 @@ export class BinManagementComponent implements OnInit {
 
   filteringBin(id : number){
     if(id == -1){
-      this.filterBins = this.bins;
+      this.filterBins = this.bins.filter(x => x.buildingId != null);;
       this.filteringBy = "All Bins"
     }
     else{
       this.filterBins = this.bins.filter(x => x.binTypeId == id);
       this.filteringBy = this.binTypes.find(x => x.binTypeId == id).binTypeDesc;
+    }
+  }
+
+  filterByBuilding(event){
+    if(event.target.checked){
+      this.filterBins = this.bins.filter(x => x.buildingId == null);
+    }
+    else{
+      this.filterBins = this.bins.filter(x => x.buildingId != null);
     }
   }
 
@@ -198,9 +207,11 @@ export class BinManagementComponent implements OnInit {
   }
 
   deleteBin(id : number){
-    this.binManagementService.deleteBin(id); // not working something with cross origin
-    let indx = this.bins.findIndex(x => x.binId == id);
-    this.bins.splice(indx, 1);  
+    let index = this.bins.findIndex(x => x.binId == id);
+    this.bins.splice(index, 1);  
+    if(this.bins[index].buildingId != null){
+      this.binManagementService.deleteBin(id);
+    }
   }
 
   updateCurrentCapacity(currCapacity : number){

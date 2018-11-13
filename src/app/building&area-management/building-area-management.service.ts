@@ -18,7 +18,9 @@ export class BuildingAreaManagementService {
    }
 
    async DeleteBuilding(buildingId : number){
-     await this.appService.delete(this.controller, 'DeleteBuilding', '?buildingId='+buildingId);
+
+     let query = `binId=${buildingId}`;
+     await this.appService.delete(this.controller, 'DeleteBuilding', query);
    }
 
    async AddBuilding(building : DbBuilding){

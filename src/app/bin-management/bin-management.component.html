@@ -33,7 +33,7 @@
         <div class="row pad-l-20">
           <div>
             <span>
-              <input type="checkbox"> Show bins without buildings
+              <input type="checkbox" (change)="filterByBuilding($event)"> Show bins without buildings
             </span>
           </div>
         </div>
@@ -44,7 +44,7 @@
 
         <ul class="list-group">
           <li *ngFor='let bin of this.filterBins' class="list-group-item" (click)="showBinDetails(bin.binId);" [class.active]="(this.isShowDetails || this.isEditMode) && bin.binId == this.binDetails.binId">
-            {{bin.binTypeDesc +" "}}{{ bin.cityAddress ? bin.cityAddress : " " + " "}}{{" " + bin?.streetAddress}}
+            {{bin.binTypeDesc +" "}}{{ bin.cityAddress ? bin.cityAddress : " " + " "}}{{bin.streetAddress ? " " + bin.streetAddress : " "}}
           </li>
         </ul>
 

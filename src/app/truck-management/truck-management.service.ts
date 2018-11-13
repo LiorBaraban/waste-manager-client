@@ -22,7 +22,8 @@ export class TruckManagementService {
   }
 
   async deleteTruck(id : number){
-    await this.appService.delete(this.controller, 'DeleteTruck', '?truckId='+id);
+    let query = `binId=${id}`;
+    await this.appService.delete(this.controller, 'DeleteTruck', query);
   }
 
   async updateTruck(truckDetails: TruckData){
