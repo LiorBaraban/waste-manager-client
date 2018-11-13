@@ -4,34 +4,48 @@
     <div class="card">
       <div class="card-header">
 
-        <h3 class="fl">
-          Building List
-        </h3>
-        <!--Filtering DropDown List -->
-        <div class="fr">
-            <button class="btn btn-secondary fr" (click)="btnNewClicked();">
-                <span >
-                  AddNew
-                  <i class="fa fa-plus-circle"></i>
-                </span>
-              </button>
-          <div class="dropdown fr">
-            <button class="btn btn-secondary" [class.dropdown-toggle]="true" [class.disabled]="false" type="button" id="dropdownMenuButton"
-              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              {{this.filteringBy}}<!--!!!!!-->
-            </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <a class="dropdown-item" (click)="filteringBuildings(-1);">All Buildings</a>
-              <a *ngFor="let area of this.areas" class="dropdown-item" (click)="filteringBuildings(area.id);">{{area?.desc}}</a>
+        <div class="row">
+          <div class="col-md-12">
+            <h3 class="fl">
+              Building List
+            </h3>
+            <!--Filtering DropDown List -->
+            <div class="fr">
+              <div class="dropdown fr">
+                <button class="btn btn-secondary" [class.dropdown-toggle]="true" [class.disabled]="false" type="button" id="dropdownMenuButton"
+                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  {{this.filteringBy}}
+                  <!--!!!!!-->
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <a class="dropdown-item" (click)="filteringBuildings(-1);">All Buildings</a>
+                  <a *ngFor="let area of this.areas" class="dropdown-item" (click)="filteringBuildings(area.id);">{{area?.desc}}</a>
+                </div>
+              </div>
             </div>
           </div>
         </div>
+        <div class="row">
+          <div class="col-md-12">
+            <button class="btn btn-secondary fr" (click)="btnNewClicked();">
+              <span>
+                Add New
+                <i class="fa fa-plus-circle"></i>
+              </span>
+            </button>
+          </div>
+        </div>
+
+
+
+
       </div>
       <div class="card-body no-pad">
         <!-- Building List -->
-        
+
         <ul class="list-group">
-          <li *ngFor='let building of this.filterBuildings' class="list-group-item" (click)="showBuildingDetails(building.buildingId);" [class.active]="(this.isShowDetails || this.isEditMode) && building.buildingId == this.buildingDetails.buildingId">
+          <li *ngFor='let building of this.filterBuildings' class="list-group-item" (click)="showBuildingDetails(building.buildingId);"
+            [class.active]="(this.isShowDetails || this.isEditMode) && building.buildingId == this.buildingDetails.buildingId">
             {{ building?.streetName + " " + building?.streetNumber + " " + this.GetAreaDesc(building.areaId)}}
           </li>
         </ul>
@@ -49,35 +63,29 @@
         <h3 class="fl">
           Building Details
         </h3>
-        <span *ngIf='!this.isAddNewMode && !this.isEditMode && this.buildingDetailsEdit'>
-          <span class="fr" (click)='btnEditClicked();'>
-            <i class="fa fa-lg fa-edit pad-l-10 mar-t-10"></i>
-          </span>
+        <span *ngIf='!this.isAddNewMode && this.buildingDetailsEdit'>
           <span class="fr" (click)='deleteBuilding(this.buildingDetailsEdit.buildingId);'>
-              <i class="fa  fa-lg fa-trash mar-t-10"></i>
-            </span>
-        </span>
-        <span *ngIf='this.isAddNewMode || this.isEditMode'>
-            <span class="fr" (click)='checkAndSave();'>
-                <i class="fa  fa-lg fa-save pad-l-10 mar-t-10"></i>
-              </span>
-            <span *ngIf="this.isEditMode" class="fr" (click)="exitEditMode();">
-                <i class="fa  fa-lg fa-undo mar-t-10"></i>
-              </span>
-              <span *ngIf="this.isAddNewMode" class="fr" (click)="exitNewMode();">
-                  <i class="fa  fa-lg fa-undo mar-t-10"></i>
-                </span>
+            <i class="fa  fa-lg fa-trash mar-t-10"></i>
           </span>
+        </span>
+        <span *ngIf='this.isAddNewMode'>
+          <span class="fr" (click)='checkAndSave();'>
+            <i class="fa  fa-lg fa-save pad-l-10 mar-t-10"></i>
+          </span>
+          <span *ngIf="this.isAddNewMode" class="fr" (click)="exitNewMode();">
+            <i class="fa  fa-lg fa-undo mar-t-10"></i>
+          </span>
+        </span>
 
       </div>
-      <div class="card-body" [class.dn]='!this.isShowDetails && !this.isEditMode && !this.isAddNewMode'>
+      <div class="card-body" [class.dn]='!this.isShowDetails && !this.isAddNewMode'>
         <!-- Read Only -->
         <div [class.dn]='!this.isShowDetails'>
           <!-- First row  -->
           <div class="row">
             <div class="col-md-6 ">
               <h3 class="fl">Area</h3>
-              <div class="fr">                                                      
+              <div class="fr">
                 <div class="btn btn-secondary">{{this.buildingDetailsEdit?.areaId ? this.GetAreaDesc(this.buildingDetailsEdit?.areaId) : "None"}}</div>
               </div>
             </div>
@@ -115,13 +123,13 @@
               <label>Trash Disposal Area: {{this.buildingDetailsEdit?.trashDisposalArea}} Square metre</label>
             </div>
             <div class="col-md-6 ">
-               <!-- empty div -->
+              <!-- empty div -->
             </div>
           </div>
         </div>
 
         <!-- Edit Mode -->
-        <div [class.dn]='!this.isEditMode && !this.isAddNewMode'>
+        <div [class.dn]='!this.isAddNewMode'>
           <!-- First row  -->
           <div class="row">
             <div class="col-md-4 ">
@@ -149,21 +157,21 @@
           <div class="row">
             <!-- Area -->
             <div class="col-md-4 ">
-                <label>street Name: </label>
-                <!-- Example single danger button -->
-                <div class="fr">
-                  <input *ngIf="this.isAddNewMode" type="text" placeholder="{{this.buildingDetailsEdit.streetName}}" 
-                          name="inputStreetName" (focusout)="updateStreetName($event.target.value)">
-                </div>
+              <label>street Name: </label>
+              <!-- Example single danger button -->
+              <div class="fr">
+                <input *ngIf="this.isAddNewMode" type="text" placeholder="{{this.buildingDetailsEdit.streetName}}" name="inputStreetName"
+                  (keyup)="updateStreetName($event.target.value)">
               </div>
+            </div>
             <!-- Street Number -->
             <div class="col-md-5 ">
-                <label>Street Number:</label>
-                <div class="fr">
-                  <input *ngIf="this.isAddNewMode" type="text" placeholder="{{this.buildingDetailsEdit.streetNumber}}" 
-                          OnlyNumber="true" name="inputStreetNumber" (focusout)="updateStreetNumber($event.target.value)">
-                </div>
+              <label>Street Number:</label>
+              <div class="fr">
+                <input *ngIf="this.isAddNewMode" type="text" placeholder="{{this.buildingDetailsEdit.streetNumber}}" OnlyNumber="true" name="inputStreetNumber"
+                  (keyup)="updateStreetNumber($event.target.value)">
               </div>
+            </div>
             <div class="col-md-2">
               <!-- empty div -->
             </div>
@@ -172,25 +180,25 @@
           <div class="row">
             <div class="col-md-6 ">
               <label>Trash Disposal Area: </label>
-                <input *ngIf="this.isAddNewMode" type="text" placeholder="{{this.buildingDetailsEdit.trashDisposalArea}}" 
-                        OnlyNumber="true" name="inputCapacity" (focusout)="updateTrashDisposalArea($event.target.value)">
+              <input *ngIf="this.isAddNewMode" type="text" placeholder="{{this.buildingDetailsEdit.trashDisposalArea}}" OnlyNumber="true"
+                name="inputCapacity" (focusout)="updateTrashDisposalArea($event.target.value)">
             </div>
           </div>
         </div>
       </div>
     </div>
-    
+
   </div>
-  
+
 </div>
 <!-- Failed -->
 <div class="row">
   <div class="col-md-4">
-      <!-- empty div -->
+    <!-- empty div -->
   </div>
   <div class="col-md-6 ">
-      <div class="alert alert-danger" role="alert" [class.dn]="!this.errorDupl">
-          There is already building in this address.
-        </div>
+    <div class="alert alert-danger" role="alert" [class.dn]="!this.errorDupl">
+      There is already building in this address.
+    </div>
   </div>
 </div>

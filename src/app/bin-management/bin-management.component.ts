@@ -42,6 +42,10 @@ export class BinManagementComponent implements OnInit {
   constructor(private binManagementService : BinManagementService) { }
 
   async ngOnInit() {
+   await this.getViewModel();
+  }
+
+  async getViewModel(){
     let viewModel : BinManagementViewModel = await this.binManagementService.getBinManagementViewModel();
 
     console.log(viewModel);
@@ -60,6 +64,8 @@ export class BinManagementComponent implements OnInit {
     this.isAddNewMode = false;
     this.isCitySelected = false;
     this.isShowBinsWithoutBuildings = false;
+    
+    this.filterBins = this.bins.filter(x => x.buildingId != null);
   }
 
   filteringBin(id : number){
@@ -133,9 +139,9 @@ export class BinManagementComponent implements OnInit {
     this.binDetailsEdit.buildingId = buildingData.buildingId;
   }
 
-  save(){
+  async save(){
     if(this.isAddNewMode){
-      this.binManagementService.addBin(this.binDetailsEdit);
+      await this.binManagementService.addBin(this.binDetailsEdit);
       this.isAddNewMode = false;
       this.isCitySelected = false;
       this.bins.push(this.binDetailsEdit);
@@ -143,13 +149,16 @@ export class BinManagementComponent implements OnInit {
     }
     else if(this.isEditMode){
       this.binDetailsEdit.currentCapacity = this.updatedCapacity;
-      this.binManagementService.updateBin(this.binDetailsEdit);
+      await this.binManagementService.updateBin(this.binDetailsEdit);
       this.isEditMode = false;
       this.isCitySelected = false;
       let indx = this.bins.findIndex(x => x.binId == this.binDetailsEdit.binId);
       this.bins.splice(indx, 1, this.binDetailsEdit);
       this.binDetailsEdit = null;
     }
+    
+    await this.getViewModel();
+
   }
 
   checkAndSave(){
@@ -197,14 +206,28 @@ export class BinManagementComponent implements OnInit {
     this.binDetailsEdit = null;
   }
 
-  deleteBin(id : number){
-    this.binManagementService.deleteBin(id); // not working something with cross origin
-    let indx = this.bins.findIndex(x => x.binId == id);
-    this.bins.splice(indx, 1);  
+  async deleteBin(id : number){
+    await this.binManagementService.deleteBin(id); // not working something with cross origin
+    //let indx = this.bins.findIndex(x => x.binId == id);
+    //this.bins.splice(indx, 1);  
+
+    await this.getViewModel();
   }
 
   updateCurrentCapacity(currCapacity : number){
     this.updatedCapacity = currCapacity;
+  }
+
+  filterByBuilding(){
+    this.isShowBinsWithoutBuildings = !this.isShowBinsWithoutBuildings;
+
+    if(this.isShowBinsWithoutBuildings){
+      this.filterBins = this.bins.filter(x => x.buildingId == null);
+    }
+    else{
+      this.filterBins = this.bins.filter(x => x.buildingId != null);
+      this.isShowBinsWithoutBuildings = false;
+    }
   }
 
 }

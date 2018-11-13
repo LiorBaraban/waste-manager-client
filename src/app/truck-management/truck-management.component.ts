@@ -33,6 +33,10 @@ export class TruckManagementComponent implements OnInit {
   constructor(private truckManagementService : TruckManagementService) { }
 
   async ngOnInit() {
+   await this.getViewModel();
+  }
+
+  async getViewModel(){
     let viewModel : TruckManagementViewModel = await this.truckManagementService.getTruckManagementViewModel();
 
     console.log(viewModel);
@@ -48,6 +52,7 @@ export class TruckManagementComponent implements OnInit {
     this.isEditMode = false;
     this.isAddNewMode = false;
     this.isCitySelected = false; //??
+    this.updatedCapacity = 0;
   }
 
   filteringTruck(id : number){
@@ -112,9 +117,9 @@ export class TruckManagementComponent implements OnInit {
     this.truckDetailsEdit.areaDesc = area.desc;
   }
 
-  save(){
+  async save(){
     if(this.isAddNewMode){
-      this.truckManagementService.addTruck(this.truckDetailsEdit);
+      await this.truckManagementService.addTruck(this.truckDetailsEdit);
       this.isAddNewMode = false;
       this.isCitySelected = false;
       this.trucks.push(this.truckDetailsEdit);
@@ -122,13 +127,14 @@ export class TruckManagementComponent implements OnInit {
     }
     else if(this.isEditMode){
       this.truckDetailsEdit.currentCapacity = this.updatedCapacity;
-      this.truckManagementService.updateTruck(this.truckDetailsEdit);
+      await this.truckManagementService.updateTruck(this.truckDetailsEdit);
       this.isEditMode = false;
       this.isCitySelected = false;
-      let indx = this.trucks.findIndex(x => x.truckId == this.truckDetailsEdit.truckId);
-      this.trucks.splice(indx, 1, this.truckDetailsEdit);
+      // let indx = this.trucks.findIndex(x => x.truckId == this.truckDetailsEdit.truckId);
+      // this.trucks.splice(indx, 1, this.truckDetailsEdit);
       this.truckDetailsEdit = null;
     }
+    await this.getViewModel();
   }
 
   checkAndSave(){
@@ -140,7 +146,8 @@ export class TruckManagementComponent implements OnInit {
   }
 
   isNewTruckHasAllInfo(newTruck : TruckData){
-    if(!newTruck.truckTypeId || this.updatedCapacity > newTruck.maxCapacity){
+    console.log(newTruck);
+    if(!newTruck.truckTypeId || this.updatedCapacity > newTruck.maxCapacity || (newTruck.areaId != null && this.trucks.findIndex(x=>x.areaId == newTruck.areaId) != -1 )){
       return false;
     }
     return true;
@@ -157,10 +164,11 @@ export class TruckManagementComponent implements OnInit {
     this.truckDetailsEdit = null;
   }
 
-  deleteTruck(id : number){
-    this.truckManagementService.deleteTruck(id); // not working something with cross origin
-    let indx = this.trucks.findIndex(x => x.truckId == id);
-    this.trucks.splice(indx, 1);  
+  async deleteTruck(id : number){
+    await this.truckManagementService.deleteTruck(id); // not working something with cross origin
+    // let indx = this.trucks.findIndex(x => x.truckId == id);
+    // this.trucks.splice(indx, 1);  
+    await this.getViewModel();
   }
 
   updateCurrentCapacity(currCapacity : number){

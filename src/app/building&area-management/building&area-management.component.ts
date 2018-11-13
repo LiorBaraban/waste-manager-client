@@ -32,7 +32,6 @@ export class BuildingAreaManagementComponent implements OnInit {
   // display members:
   isShowDetails: boolean;
   isCitySelected: boolean;
-  isEditMode: boolean;
   isAddNewMode: boolean; 
   errorDupl: boolean;
 
@@ -41,6 +40,11 @@ export class BuildingAreaManagementComponent implements OnInit {
    }
 
   async ngOnInit() {
+    await this.getViewModel();
+    
+  }
+
+  async getViewModel(){
     let viewModel : BuildingAreaManagementViewModel = await this.buildingAreaManagementService.BuildingAreaManagementViewModel();
     console.log(viewModel);
 
@@ -51,10 +55,8 @@ export class BuildingAreaManagementComponent implements OnInit {
     this.filteringBy = "Areas";
 
     this.isShowDetails = false;
-    this.isEditMode = false;
     this.isAddNewMode = false;
     this.isCitySelected = false;
-    
   }
 
   filteringBuildings(id : number){
@@ -73,7 +75,6 @@ export class BuildingAreaManagementComponent implements OnInit {
     this.buildingDetailsEdit = this.copyBuildingData(this.buildingDetails);
     this.isShowDetails = true;
     this.isAddNewMode = false;
-    this.isEditMode = false;
   }
 
   copyBuildingData(buildingData : DbBuilding){
@@ -90,29 +91,22 @@ export class BuildingAreaManagementComponent implements OnInit {
     return this.areas.find(x => x.id == areaId).desc;
   }
 
-  btnEditClicked(){
-    if(this.buildingDetails){
-      this.isEditMode = true;
-      this.isShowDetails = false;
-      this.isAddNewMode = false;
-    }
-  }
-
+ 
   btnNewClicked(){
     this.isAddNewMode = true;
-    this.isEditMode = false;
     this.isShowDetails = false;
     
     this.buildingDetailsEdit = new DbBuilding();
   }
 
-  deleteBuilding(id : number){ // something with cross-origin
-    this.buildingAreaManagementService.DeleteBuilding(id); // not working something with cross origin
-    let indx = this.buildings.findIndex(x => x.buildingId == id);
-    this.buildings.splice(indx, 1);  
+  async deleteBuilding(id : number){ // something with cross-origin
+    await this.buildingAreaManagementService.DeleteBuilding(id); // not working something with cross origin
+    await this.getViewModel();
+    
   }
 
   checkAndSave(){
+    console.log("checkAndSave");
     if(this.isNewBuildingHasAllInfo(this.buildingDetailsEdit)){
         this.save();
       }
@@ -122,35 +116,33 @@ export class BuildingAreaManagementComponent implements OnInit {
   }
 
   isNewBuildingHasAllInfo(newBuilding : DbBuilding){
-
+    console.log("isNewBuildingHasAllInfo");
     if(!newBuilding.streetName || !newBuilding.streetNumber || newBuilding.trashDisposalArea < 0 || !newBuilding.areaId){
+      console.log(newBuilding);
+      console.log("false1");
       return false;
     }       
     //check for duplicates!!
     let index = this.buildings.filter(x => x.streetName == newBuilding.streetName).findIndex(x => x.streetNumber == newBuilding.streetNumber);
     if( index != -1 && this.buildings[index].areaId == newBuilding.areaId){
       this.errorDupl = true;
+      console.log("false2");
       return false;
     }
+
+    console.log("true");
     return true;
   }
 
-  save(){
+  async save(){
+    console.log("Save");
     if(this.isAddNewMode){
-      this.buildingAreaManagementService.AddBuilding(this.buildingDetailsEdit);
+      await this.buildingAreaManagementService.AddBuilding(this.buildingDetailsEdit);
       this.isAddNewMode = false;
       this.buildings.push(this.buildingDetailsEdit);
       this.isCitySelected = false;
       this.buildingDetailsEdit = null;
-    }
-    else if(this.isEditMode){
-      //this.buildingDetailsEdit.trashDisposalArea = this.updatedtrashDisposalArea;
-     // this.binManagementService.updateBin(this.binDetailsEdit);
-      this.isEditMode = false;
-      this.isCitySelected = false;
-      //let indx = this.bins.findIndex(x => x.binId == this.binDetailsEdit.binId);
-      //this.bins.splice(indx, 1, this.binDetailsEdit);
-      this.buildingDetailsEdit = null;
+      await this.getViewModel();
     }
   }
 
@@ -160,11 +152,7 @@ export class BuildingAreaManagementComponent implements OnInit {
     this.buildingDetailsEdit = null;
   }
 
-  exitEditMode(){
-    this.isEditMode = false;
-    this.isCitySelected = false;
-    this.buildingDetailsEdit = null;
-  }
+  
 
   AddArea(area : LutItem){
     this.isCitySelected = true;
@@ -180,11 +168,13 @@ export class BuildingAreaManagementComponent implements OnInit {
 
   updateStreetName(streetName : string){
     this.buildingDetailsEdit.streetName = streetName;
+    console.log(this.buildingDetailsEdit.streetName);
     this.errorDupl = false;
   }
 
   updateStreetNumber(streetNumber : string){
     this.buildingDetailsEdit.streetNumber = streetNumber;
+    console.log(this.buildingDetailsEdit.streetNumber);
     this.errorDupl = false;
   }
 

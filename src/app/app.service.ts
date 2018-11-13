@@ -7,7 +7,7 @@ import { Http } from '@angular/http';
 export class AppService {
 
   // $$ TODO - move url to config file
-  url: string = 'http://localhost:3118/api'
+  url: string = 'http://localhost/Waste/api'
 
   constructor(private http: Http) { }
 
@@ -25,6 +25,16 @@ export class AppService {
       console.log(error);
     }
 
+  }
+
+  async getQuery(controller, action, query){
+    try {
+      let response = await this.http.get(`${this.url}/${controller}/${action}?${query}`).toPromise();
+      return response.json();
+    } catch (error) {
+      console.log("DELETE failed!")
+      console.log(error);
+    }
   }
 
   async post(controller, action, body) {
@@ -50,7 +60,7 @@ export class AppService {
   async delete(controller, action, query?) {
 
     try {
-      let response = await this.http.delete(`${this.url}/${controller}/${action}?${query}`).toPromise();
+      let response = await this.http.get(`${this.url}/${controller}/${action}?${query}`).toPromise();
       return response.json();
     } catch (error) {
       console.log("DELETE failed!")

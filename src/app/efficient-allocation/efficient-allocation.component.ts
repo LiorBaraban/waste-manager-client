@@ -137,7 +137,7 @@ export class EfficientAllocationComponent implements OnInit {
 
     this.efficientAllocationService.GetAvgCapacity(building.buildingId).then(
       avgCapacity => {
-        this.currentBuilding.avgCapacity = avgCapacity;
+        this.currentBuilding.avgCapacity = Math.round( avgCapacity);
     });
 
     this.efficientAllocationService.GetAreaDesc(building.areaId).then(

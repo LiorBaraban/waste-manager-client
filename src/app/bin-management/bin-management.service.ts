@@ -50,11 +50,11 @@ export class BinManagementService {
   }
 
   async GetBinsAreaDisposal(buildingId : number){
-    return await this.appService.delete('Building', 'GetBinsAreaDisposal', '?buildingId='+buildingId);
+    return await this.appService.getQuery('Building', 'GetBinsAreaDisposal', 'buildingId='+buildingId);
   }
 
   async GetBuildingAreaDisposal(buildingId : number){
-    return await this.appService.delete('Building', 'GetBuildingAreaDisposal', '?buildingId='+buildingId);
+    return await this.appService.getQuery('Building', 'GetBuildingAreaDisposal', 'buildingId='+buildingId);
   }
   
   async addBin(binDetails: BinData){

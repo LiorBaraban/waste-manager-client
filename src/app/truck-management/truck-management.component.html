@@ -3,27 +3,44 @@
   <div class="col-md-4 ">
     <div class="card">
       <div class="card-header">
-        Truck List
-        <!--Filtering DropDown List -->
-        <div class="fr">
-          <div class="dropdown">
-            <button class="btn btn-secondary" [class.dropdown-toggle]="true" [class.disabled]="false" type="button" id="dropdownMenuButton"
-              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              {{this.filteringBy}}
-            </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <a class="dropdown-item" (click)="filteringTruck(-1);">All Trucks</a>
-              <a *ngFor="let truckType of this.truckTypes" class="dropdown-item" (click)="filteringTruck(truckType.truckTypeId);">{{truckType?.truckTypeDesc}}</a>
+        <div class="row">
+          <div class="col-md-12">
+            <h3 class="fl">
+              Truck List
+            </h3>
+            <!--Filtering DropDown List -->
+            <div class="fr">
+              <div class="dropdown fr">
+                <button class="btn btn-secondary" [class.dropdown-toggle]="true" [class.disabled]="false" type="button" id="dropdownMenuButton"
+                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  {{this.filteringBy}}
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <a class="dropdown-item" (click)="filteringTruck(-1);">All Trucks</a>
+                  <a *ngFor="let truckType of this.truckTypes" class="dropdown-item" (click)="filteringTruck(truckType.truckTypeId);">{{truckType?.truckTypeDesc}}</a>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-
+        <div class="row">
+          <div class="col-md-12">
+            <div class="fr">
+              <button class="btn btn-secondary fr" (click)="btnNewClicked();">
+                <span>
+                  Add New
+                  <i class="fa fa-plus-circle"></i>
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="card-body">
+      <div class="card-body no-pad">
         <!-- Truck List -->
-        <span class="fr" (click)="btnNewClicked();">
+        <!-- <span class="fr" (click)="btnNewClicked();">
           <i class="fa fa-plus-circle"></i>
-        </span>
+        </span> -->
         <ul class="list-group">
           <li *ngFor='let truck of this.filterTrucks' class="list-group-item" (click)="showTruckDetails(truck.truckId);" [class.active]="(this.isShowDetails || this.isEditMode) && truck.truckId == this.truckDetails.truckId">
             {{truck.truckTypeDesc +" "}}{{ truck.areaDesc ? truck.areaDesc : " "}}
@@ -40,26 +57,28 @@
   <div class="col-md-8 ">
     <div class="card">
       <div class="card-header">
-        Trcuk Details
+        <h3 class="fl">
+          Truck Details
+        </h3>
         <span *ngIf='!this.isAddNewMode && !this.isEditMode && this.truckDetailsEdit'>
           <span class="fr" (click)='btnEditClicked();'>
-            <i class="fa fa-edit"></i>
+              <i class="fa fa-lg fa-edit pad-l-10 mar-t-10"></i>
           </span>
           <span class="fr" (click)='deleteTruck(this.truckDetailsEdit.truckId);'>
-              <i class="fa fa-trash">space</i>
-            </span>
+              <i class="fa  fa-lg fa-trash mar-t-10"></i>
+          </span>
         </span>
         <span *ngIf='this.isAddNewMode || this.isEditMode'>
-            <span class="fr" (click)='checkAndSave();'>
-                <i class="fa fa-save"></i>
-              </span>
-            <span *ngIf="this.isEditMode" class="fr" (click)="exitEditMode();">
-                <i class="fa fa-undo"></i>
-              </span>
-              <span *ngIf="this.isAddNewMode" class="fr" (click)="exitNewMode();">
-                  <i class="fa fa-undo"></i>
-                </span>
+          <span class="fr" (click)='checkAndSave();'>
+              <i class="fa  fa-lg fa-save pad-l-10 mar-t-10"></i>
           </span>
+          <span *ngIf="this.isEditMode" class="fr" (click)="exitEditMode();">
+              <i class="fa  fa-lg fa-undo mar-t-10"></i>
+          </span>
+          <span *ngIf="this.isAddNewMode" class="fr" (click)="exitNewMode();">
+              <i class="fa  fa-lg fa-undo mar-t-10"></i>
+          </span>
+        </span>
 
       </div>
       <div class="card-body" [class.dn]='!this.isShowDetails && !this.isEditMode && !this.isAddNewMode'>
@@ -98,7 +117,7 @@
               </div>
             </div>-->
             <div class="col-md-5">
-               <!-- empty div  -->
+              <!-- empty div  -->
             </div>
           </div>
           <!-- Third Row -->
@@ -142,20 +161,20 @@
           <div class="row">
             <!-- Area -->
             <div class="col-md-7 ">
-                <label>Area: </label>
-                <!-- Example single danger button -->
-                <div class="fr">
-                  <div class="dropdown">
-                    <button class="btn btn-secondary" [class.dropdown-toggle]="true" [class.disabled]="false" type="button" id="dropdownMenuButton"
-                      data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      {{this.truckDetailsEdit?.areaDesc ? this.truckDetailsEdit.areaDesc : "Area"}}
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                      <a *ngFor="let area of areas" class="dropdown-item" (click)="addCity(area)">{{area.desc}}</a>
-                    </div>
+              <label>Area: </label>
+              <!-- Example single danger button -->
+              <div class="fr">
+                <div class="dropdown">
+                  <button class="btn btn-secondary" [class.dropdown-toggle]="true" [class.disabled]="false" type="button" id="dropdownMenuButton"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    {{this.truckDetailsEdit?.areaDesc ? this.truckDetailsEdit.areaDesc : "Area"}}
+                  </button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a *ngFor="let area of areas" class="dropdown-item" (click)="addCity(area)">{{area.desc}}</a>
                   </div>
                 </div>
               </div>
+            </div>
             <!-- Address
             <div class="col-md-4 ">
                 <label>Address:</label>
@@ -174,15 +193,15 @@
               </div>-->
             <div class="col-md-5">
               <!-- empty div -->
-            </div> 
+            </div>
           </div>
           <!-- Third Row -->
           <div class="row">
             <div class="col-md-6 ">
               <label>Current Capacity: </label>
               <label *ngIf="this.isAddNewMode"> 0</label>
-                <input *ngIf="this.isEditMode" type="text" placeholder="{{this.truckDetailsEdit.currentCapacity}}" 
-                        OnlyNumber="true" name="inputCapacity" (focusout)="updateCurrentCapacity($event.target.value)">
+              <input *ngIf="this.isEditMode" type="text" placeholder="{{this.truckDetailsEdit.currentCapacity}}" OnlyNumber="true" name="inputCapacity"
+                (focusout)="updateCurrentCapacity($event.target.value)">
               <!-- change current capacity - asign it to var ?? -->
             </div>
             <div class="col-md-6 ">

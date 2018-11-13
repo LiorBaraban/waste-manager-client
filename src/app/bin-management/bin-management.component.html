@@ -5,37 +5,41 @@
       <div class="card-header">
 
         <div class="row pad-l-20">
-
-
-          <h3 class="fl">
-            Bin List
-          </h3>
-          <!--Filtering DropDown List -->
-          <div class="fr">
-            <button class="btn btn-secondary fr" (click)="btnNewClicked();">
-              <span>
-                AddNew
-                <i class="fa fa-plus-circle"></i>
-              </span>
-            </button>
-            <div class="dropdown fr mar-l-20">
-              <button class="btn btn-secondary" [class.dropdown-toggle]="true" [class.disabled]="false" type="button" id="dropdownMenuButton"
-                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                {{this.filteringBy}}
-              </button>
-              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" (click)="filteringBin(-1);">All Bins</a>
-                <a *ngFor="let binType of this.binTypes" class="dropdown-item" (click)="filteringBin(binType.binTypeId);">{{binType?.binTypeDesc}}</a>
+          <div class="col-md-12">
+            <h3 class="fl">
+              Bin List
+            </h3>
+            <!--Filtering DropDown List -->
+            <div class="fr">
+              <div class="dropdown fr mar-l-20">
+                <button class="btn btn-secondary" [class.dropdown-toggle]="true" [class.disabled]="false" type="button" id="dropdownMenuButton"
+                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  {{this.filteringBy}}
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <a class="dropdown-item" (click)="filteringBin(-1);">All Bins</a>
+                  <a *ngFor="let binType of this.binTypes" class="dropdown-item" (click)="filteringBin(binType.binTypeId);">{{binType?.binTypeDesc}}</a>
+                </div>
               </div>
             </div>
           </div>
         </div>
-        <div class="row pad-l-20">
-          <div>
+        <div class="row pad-l-20 pad-t-10">
+          <div class="col-md-12">
+          <div class="fl">
             <span>
-              <input type="checkbox"> Show bins without buildings
+              <input type="checkbox" (change)='this.filterByBuilding()' [checked]='this.isShowBinsWithoutBuildings'> Show unallocated bins
             </span>
           </div>
+          <div class="fr">
+            <button class="btn btn-secondary fr" (click)="btnNewClicked();">
+              <span>
+                Add New
+                <i class="fa fa-plus-circle"></i>
+              </span>
+            </button>
+          </div>
+        </div>
         </div>
 
       </div>

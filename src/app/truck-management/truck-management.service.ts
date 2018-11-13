@@ -22,7 +22,7 @@ export class TruckManagementService {
   }
 
   async deleteTruck(id : number){
-    await this.appService.delete(this.controller, 'DeleteTruck', '?truckId='+id);
+    await this.appService.delete(this.controller, 'DeleteTruck', 'truckId='+id);
   }
 
   async updateTruck(truckDetails: TruckData){

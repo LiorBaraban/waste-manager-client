@@ -2,6 +2,9 @@
 @import "~bootstrap/dist/css/bootstrap.css";
 @import "~font-awesome/css/font-awesome.css";
 
+.card-header .btn{
+    min-width: 100px;
+}
 
 .navbar-light .navbar-toggler-icon {
     background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(255,255,255, 0.5)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E");
@@ -60,7 +63,7 @@
 .card-header{
     /* background-color: #9ce5cd; */
     background-color: #5ee1c6;
-    min-height: 70px;
+    min-height: 100px;
 }
 
 .list-group-item.active{
