@@ -1,11 +1,11 @@
 <div class="row">
-  <!-- Bin List Container -->
+  <!-- Building List Container -->
   <div class="col-md-4 ">
     <div class="card">
       <div class="card-header">
 
         <h3 class="fl">
-          Bin List
+          Building List
         </h3>
         <!--Filtering DropDown List -->
         <div class="fr">
@@ -18,24 +18,21 @@
           <div class="dropdown fr">
             <button class="btn btn-secondary" [class.dropdown-toggle]="true" [class.disabled]="false" type="button" id="dropdownMenuButton"
               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              {{this.filteringBy}}
+              {{this.filteringBy}}<!--!!!!!-->
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <a class="dropdown-item" (click)="filteringBin(-1);">All Bins</a>
-              <a *ngFor="let binType of this.binTypes" class="dropdown-item" (click)="filteringBin(binType.binTypeId);">{{binType?.binTypeDesc}}</a>
+              <a class="dropdown-item" (click)="filteringBuildings(-1);">All Buildings</a>
+              <a *ngFor="let area of this.areas" class="dropdown-item" (click)="filteringBuildings(area.id);">{{area?.desc}}</a>
             </div>
           </div>
-
-          
         </div>
-
       </div>
       <div class="card-body no-pad">
-        <!-- Bin List -->
+        <!-- Building List -->
         
         <ul class="list-group">
-          <li *ngFor='let bin of this.filterBins' class="list-group-item" (click)="showBinDetails(bin.binId);" [class.active]="(this.isShowDetails || this.isEditMode) && bin.binId == this.binDetails.binId">
-            {{bin.binTypeDesc +" "}}{{ bin.cityAddress ? bin.cityAddress : " " + " "}}{{" " + bin?.streetAddress}}
+          <li *ngFor='let building of this.filterBuildings' class="list-group-item" (click)="showBuildingDetails(building.buildingId);" [class.active]="(this.isShowDetails || this.isEditMode) && building.buildingId == this.buildingDetails.buildingId">
+            {{ building?.streetName + " " + building?.streetNumber + " " + this.GetAreaDesc(building.areaId)}}
           </li>
         </ul>
 
@@ -45,18 +42,18 @@
       </div>
     </div>
   </div>
-  <!-- Bin Details Container -->
+  <!-- Building Details Container -->
   <div class="col-md-8 ">
     <div class="card">
       <div class="card-header">
         <h3 class="fl">
-          Bin Details
+          Building Details
         </h3>
-        <span *ngIf='!this.isAddNewMode && !this.isEditMode && this.binDetailsEdit'>
+        <span *ngIf='!this.isAddNewMode && !this.isEditMode && this.buildingDetailsEdit'>
           <span class="fr" (click)='btnEditClicked();'>
             <i class="fa fa-lg fa-edit pad-l-10 mar-t-10"></i>
           </span>
-          <span class="fr" (click)='deleteBin(this.binDetailsEdit.binId);'>
+          <span class="fr" (click)='deleteBuilding(this.buildingDetailsEdit.buildingId);'>
               <i class="fa  fa-lg fa-trash mar-t-10"></i>
             </span>
         </span>
@@ -78,34 +75,34 @@
         <div [class.dn]='!this.isShowDetails'>
           <!-- First row  -->
           <div class="row">
-            <div class="col-md-7 ">
-              <h3 class="fl">Bin Type</h3>
-              <div class="fr">
-                <div class="btn btn-secondary">{{this.binDetailsEdit?.binTypeDesc ? this.binDetailsEdit?.binTypeDesc : "Bin Type"}}</div>
+            <div class="col-md-6 ">
+              <h3 class="fl">Area</h3>
+              <div class="fr">                                                      
+                <div class="btn btn-secondary">{{this.buildingDetailsEdit?.areaId ? this.GetAreaDesc(this.buildingDetailsEdit?.areaId) : "None"}}</div>
               </div>
             </div>
             <div class="col-md-1">
               <!-- Empty div -->
             </div>
             <div class="col-md-4 ">
-              <h3>Capacity: {{(this.binDetails?.currentCapacity * 100) / this.binDetails?.maxCapacity | number}}% </h3>
+              <!-- Empty div -->
             </div>
           </div>
           <!-- Second Row -->
           <div class="row">
-            <!-- Area -->
+            <!-- street Name -->
             <div class="col-md-6 ">
-              <label>Area: </label>
+              <label>street Name: </label>
               <!-- Example single danger button -->
               <div class="fr">
-                <div class="btn btn-secondary">{{this.binDetails?.cityAddress ? this.binDetails.cityAddress : "None" }}</div>
+                <div class="btn btn-secondary">{{this.buildingDetailsEdit?.streetName ? this.buildingDetailsEdit?.streetName : "None" }}</div>
               </div>
             </div>
-            <!-- Address -->
+            <!-- street Number -->
             <div class="col-md-4">
-              <label>Address:</label>
+              <label>street Number:</label>
               <div class="fr">
-                <div class="btn btn-secondary">{{this.binDetails?.streetAddress ? this.binDetails?.streetAddress : "None" }}</div>
+                <div class="btn btn-secondary">{{this.buildingDetailsEdit?.streetNumber ? this.buildingDetailsEdit?.streetNumber : "None" }}</div>
               </div>
             </div>
             <div class="col-md-2">
@@ -115,10 +112,10 @@
           <!-- Third Row -->
           <div class="row">
             <div class="col-md-6 ">
-              <label>Current Capacity: {{this.binDetails?.currentCapacity}} Litres</label>
+              <label>Trash Disposal Area: {{this.buildingDetailsEdit?.trashDisposalArea}} Square metre</label>
             </div>
             <div class="col-md-6 ">
-              <label>Max Capacity: {{this.binDetails?.maxCapacity}} Litres</label>
+               <!-- empty div -->
             </div>
           </div>
         </div>
@@ -127,16 +124,16 @@
         <div [class.dn]='!this.isEditMode && !this.isAddNewMode'>
           <!-- First row  -->
           <div class="row">
-            <div class="col-md-7 ">
-              <h3 class="fl">Bin Type </h3>
+            <div class="col-md-4 ">
+              <h3 class="fl">Area </h3>
               <div class="fr">
                 <div class="dropdown">
                   <button class="btn btn-secondary" [class.dropdown-toggle]="true" [class.disabled]="false" type="button" id="dropdownMenuButton"
                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    {{this.binDetailsEdit?.binTypeDesc ? this.binDetailsEdit?.binTypeDesc : "Bin Type"}}
+                    {{this.buildingDetailsEdit?.areaId ? this.GetAreaDesc(this.buildingDetailsEdit?.areaId) : "None"}}
                   </button>
                   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a *ngFor="let binType of binTypes" class="dropdown-item" (click)="addBinType(binType);">{{binType.binTypeDesc}}</a>
+                    <a *ngFor="let area of areas" class="dropdown-item" (click)="AddArea(area);">{{area.desc}}</a>
                   </div>
                 </div>
               </div>
@@ -145,42 +142,26 @@
               <!-- Empty Div -->
             </div>
             <div class="col-md-4 ">
-              <h3 *ngIf="this.isEditMode">Capacity: {{(this.binDetails?.currentCapacity * 100) / this.binDetails?.maxCapacity | number}}%</h3>
-              <h3 *ngIf="this.isAddNewMode">Capacity: 0%</h3>
+              <!-- Empty Div -->
             </div>
           </div>
           <!-- Second Row -->
           <div class="row">
             <!-- Area -->
-            <div class="col-md-6 ">
-                <label>Area: </label>
+            <div class="col-md-4 ">
+                <label>street Name: </label>
                 <!-- Example single danger button -->
                 <div class="fr">
-                  <div class="dropdown">
-                    <button class="btn btn-secondary" [class.dropdown-toggle]="true" [class.disabled]="false" type="button" id="dropdownMenuButton"
-                      data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      {{this.binDetailsEdit?.cityAddress ? this.binDetailsEdit.cityAddress : "Area"}}
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                      <a *ngFor="let area of areas" class="dropdown-item" (click)="addCity(area)">{{area.desc}}</a>
-                    </div>
-                  </div>
+                  <input *ngIf="this.isAddNewMode" type="text" placeholder="{{this.buildingDetailsEdit.streetName}}" 
+                          name="inputStreetName" (focusout)="updateStreetName($event.target.value)">
                 </div>
               </div>
-            <!-- Address -->
-            <div class="col-md-4 ">
-                <label>Address:</label>
-                <!-- Street Number -->
+            <!-- Street Number -->
+            <div class="col-md-5 ">
+                <label>Street Number:</label>
                 <div class="fr">
-                  <div class="dropdown">
-                    <button class="btn btn-secondary" [class.dropdown-toggle]="true" [class.disabled]="false" type="button" id="dropdownMenuButton"
-                      data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" [disabled]="!this.isCitySelected">
-                      {{this.binDetailsEdit?.streetAddress ? this.binDetailsEdit.streetAddress : "Address"}}
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                      <a *ngFor="let building of buildingsInArea" class="dropdown-item" (click)="addStreetAddress(building)">{{building.streetName + " " + building.streetNumber}}</a>
-                    </div>
-                  </div>
+                  <input *ngIf="this.isAddNewMode" type="text" placeholder="{{this.buildingDetailsEdit.streetNumber}}" 
+                          OnlyNumber="true" name="inputStreetNumber" (focusout)="updateStreetNumber($event.target.value)">
                 </div>
               </div>
             <div class="col-md-2">
@@ -190,18 +171,26 @@
           <!-- Third Row -->
           <div class="row">
             <div class="col-md-6 ">
-              <label>Current Capacity: </label>
-              <label *ngIf="this.isAddNewMode"> 0</label>
-                <input *ngIf="this.isEditMode" type="text" placeholder="{{this.binDetailsEdit.currentCapacity}}" 
-                        OnlyNumber="true" name="inputCapacity" (focusout)="updateCurrentCapacity($event.target.value)">
-              <!-- change current capacity - asign it to var ?? -->
-            </div>
-            <div class="col-md-6 ">
-              <label>Max Capacity: {{this.binDetailsEdit?.maxCapacity}} Litres</label>
+              <label>Trash Disposal Area: </label>
+                <input *ngIf="this.isAddNewMode" type="text" placeholder="{{this.buildingDetailsEdit.trashDisposalArea}}" 
+                        OnlyNumber="true" name="inputCapacity" (focusout)="updateTrashDisposalArea($event.target.value)">
             </div>
           </div>
         </div>
       </div>
     </div>
+    
+  </div>
+  
+</div>
+<!-- Failed -->
+<div class="row">
+  <div class="col-md-4">
+      <!-- empty div -->
+  </div>
+  <div class="col-md-6 ">
+      <div class="alert alert-danger" role="alert" [class.dn]="!this.errorDupl">
+          There is already building in this address.
+        </div>
   </div>
 </div>

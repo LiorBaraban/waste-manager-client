@@ -83,8 +83,8 @@ export class EffectiveSchedulingComponent implements OnInit {
     return truckrep;
   }
 
-  Optimize(){
-    this.effectiveSchedulingService.WorkSchedule();
+  async Optimize(){
+    await this.effectiveSchedulingService.WorkSchedule();
     this.UpdateAreaData();
     this.effectiveSchedulingService.GetTotalStats().then(totalStats => {
       this.totalStats = totalStats;

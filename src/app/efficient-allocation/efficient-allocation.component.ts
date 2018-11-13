@@ -115,6 +115,7 @@ export class EfficientAllocationComponent implements OnInit {
   }
 
   SelectBuilding(building : BuildingData){
+    console.log(building);
     this.buildingSelected = true;
 
     this.currentBuilding = new BuildingFullData();
@@ -139,7 +140,7 @@ export class EfficientAllocationComponent implements OnInit {
         this.currentBuilding.avgCapacity = avgCapacity;
     });
 
-    this.efficientAllocationService.GetAreaDesc(building.buildingId).then(
+    this.efficientAllocationService.GetAreaDesc(building.areaId).then(
       areaDesc => {
         this.currentBuilding.areaDesc = areaDesc;
       });

@@ -147,21 +147,39 @@ export class BinManagementComponent implements OnInit {
       this.bins.splice(indx, 1, this.binDetailsEdit);
       this.binDetailsEdit = null;
     }
-
   }
 
   checkAndSave(){
-    if(this.isNewBinHasAllInfo(this.binDetailsEdit)){
+    this.isNewBinHasAllInfo(this.binDetailsEdit).then(answer =>{
+      if(answer == true){
         this.save();
-    } else{
+      }
+      else{
       // Need to fill all the info
-    }
+      }
+    });    
   }
 
-  isNewBinHasAllInfo(newBin : BinData){
+  async isNewBinHasAllInfo(newBin : BinData){
+    let binsAreaDisposal;
+    let buildingAreaDisposal;
+
     if(!newBin.binTypeId || !newBin.cityAddress || !newBin.streetAddress || this.updatedCapacity > newBin.maxCapacity){
       return false;
     }
+
+    await this.binManagementService.GetBinsAreaDisposal(newBin.buildingId).then(answer =>{
+      binsAreaDisposal = answer;
+    });
+
+    await this.binManagementService.GetBuildingAreaDisposal(newBin.buildingId).then(answer =>{
+      buildingAreaDisposal = answer;
+    });
+
+    if((binsAreaDisposal + newBin.binTrashDisposalArea) > buildingAreaDisposal){
+      return false;
+    }
+       
     return true;
   }
 

@@ -13,6 +13,7 @@ import { TruckManagementComponent } from './truck-management/truck-management.co
 import { EfficientAllocationComponent } from './efficient-allocation/efficient-allocation.component';
 import { EffectiveSchedulingComponent } from './effective-scheduling/effective-scheduling.component';
 import { SubmittersComponent } from './submitters/submitters.component';
+import { BuildingAreaManagementComponent } from './building&area-management/building&area-management.component';
 
 
 
@@ -25,6 +26,7 @@ let routes =
   { path: 'homepage', component: HomepageComponent },
   { path: 'bin', component: BinManagementComponent}, 
   { path: 'truck', component: TruckManagementComponent},
+  { path: 'building&area', component: BuildingAreaManagementComponent},
   { path: 'efficientAllocation', component: EfficientAllocationComponent},
   { path: 'effectiveScheduling', component: EffectiveSchedulingComponent}
   
@@ -44,7 +46,8 @@ let routes =
     TruckManagementComponent,
     EfficientAllocationComponent,
     EffectiveSchedulingComponent,
-    SubmittersComponent
+    SubmittersComponent,
+    BuildingAreaManagementComponent
   ],
   imports: [
     BrowserModule,
